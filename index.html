@@ -38,6 +38,7 @@
   --red:#b8202f;
   --black:#1a1414;
   --green:#17734a;
+  --blue:#2c5aa8;
   --win:#8fe0a8;
   --lose:#ff9b94;
   --display:"Limelight","Didot","Bodoni 72",Georgia,serif;
@@ -170,20 +171,74 @@ h1{margin:0;font-family:var(--display);font-weight:400;font-size:34px;line-heigh
 .on-table{margin-left:auto;text-align:right;font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted)}
 .on-table b{display:block;font-size:17px;letter-spacing:0;color:var(--ivory);font-variant-numeric:tabular-nums}
 
+/* Video poker */
+.vp-pays{background:var(--velvet-2);font-size:13px}
+.vp-pays .pt span{letter-spacing:0}
+.vp-hand{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;padding-top:8px}
+.vp-slot{display:grid;gap:6px;justify-items:center;padding:0;border:0;background:none}
+.vp-slot .card{width:100%;height:auto;aspect-ratio:5/7;transition:transform .15s,box-shadow .15s}
+.vp-slot .card.still{animation:none}
+.vp-slot .card .cs{font-size:clamp(20px,7vw,30px)}
+.vp-slot.held .card{transform:translateY(-6px);box-shadow:0 0 0 2px var(--brass),0 6px 12px rgba(0,0,0,.4)}
+.held-tag{font-size:10.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--brass);visibility:hidden}
+.vp-slot.held .held-tag{visibility:visible}
+
+/* Baccarat */
+.felt.flat{border-radius:24px;padding-bottom:18px}
+.bac-seats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.seat.won .total{background:var(--brass);color:var(--velvet)}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;vertical-align:middle}
+.dot.P{background:var(--blue)}
+.dot.B{background:var(--red)}
+.dot.T{background:var(--green)}
+.pick-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.pick{min-height:62px;display:grid;gap:3px;place-items:center;align-content:center;border:1.5px solid var(--line);border-radius:14px;background:var(--velvet-2);font-weight:800}
+.pick span{display:flex;align-items:center;gap:6px}
+.pick small{font-size:12px;font-weight:600;color:var(--muted)}
+.pick[aria-pressed="true"]{border-color:var(--brass);background:var(--velvet-3);box-shadow:inset 0 0 0 1px var(--brass)}
+.pick:disabled{opacity:.6}
+.road{display:flex;flex-wrap:wrap;gap:5px;align-items:center}
+.road .section-label{width:100%;margin:0}
+.road i{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:11px;font-weight:800;color:var(--ivory)}
+.road i.P{background:var(--blue)}
+.road i.B{background:var(--red)}
+.road i.T{background:var(--green)}
+.road-empty{font-size:13px;color:var(--muted)}
+
+/* Crash */
+.crash-stage{position:relative;aspect-ratio:4/3;max-width:100%;overflow:hidden;border:2px solid var(--brass-dim);border-radius:18px;background:radial-gradient(120% 100% at 50% 100%,var(--velvet-3),var(--black))}
+.crash-stage canvas{display:block;width:100%;height:100%}
+.crash-mult{position:absolute;inset:0;display:grid;place-items:center;align-content:center;gap:4px;pointer-events:none;font-family:var(--display);font-size:clamp(44px,15vw,64px);line-height:1;color:var(--ivory);font-variant-numeric:tabular-nums}
+.crash-mult small{font-family:var(--body);font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.crash-mult.bust{color:var(--lose)}
+.crash-mult.safe{color:var(--win)}
+.history.pills i{width:auto;padding:0 9px;border-radius:999px;background:var(--velvet-3)}
+.history.pills i.lo{color:var(--lose)}
+.history.pills i.hi{background:var(--brass);color:var(--velvet)}
+.controls.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+.duo .bet{justify-content:space-between}
+.duo .bet .lbl{padding-inline:6px 0}
+.duo .bet button{width:34px}
+.duo .bet output{min-width:46px}
+
 .fine{margin:28px 0 0;font-size:12.5px;color:var(--muted);max-width:52ch}
 .fine b{color:var(--ivory);user-select:all;-webkit-user-select:all}
 
 /* Tab bar */
 .tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;padding-bottom:env(safe-area-inset-bottom,0px);background:var(--velvet-glass);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-top:1px solid var(--line)}
-.tabs-inner{max-width:540px;height:var(--tabbar);margin:0 auto;padding-inline:8px;display:grid;grid-template-columns:repeat(3,1fr)}
-.tab{border:0;background:none;display:grid;place-items:center;align-content:center;gap:3px;color:var(--muted);font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
-.tab .g{font-family:var(--display);font-size:21px;line-height:1;letter-spacing:0}
+.tabs-inner{max-width:540px;height:var(--tabbar);margin:0 auto;padding-inline:4px;display:grid;grid-template-columns:repeat(6,minmax(0,1fr))}
+.tab{min-width:0;padding:0;border:0;background:none;display:grid;place-items:center;align-content:center;gap:4px;color:var(--muted);font-size:10.5px;font-weight:800;letter-spacing:.01em;white-space:nowrap}
+.tab .g{font-family:var(--display);font-size:20px;line-height:1;letter-spacing:0}
 .tab[aria-current="page"]{color:var(--brass)}
 
 @media (max-width:360px){
   .reels{--cell:64px}
   .sym{font-size:34px}
   h1{font-size:28px}
+  .bac-seats .card{width:48px;height:68px}
+  .bac-seats .card+.card{margin-left:-16px}
+  .controls.duo{grid-template-columns:1fr}
+  .tab{font-size:9.5px}
 }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:0s!important;animation-iteration-count:1!important;transition-duration:0s!important}
@@ -280,6 +335,74 @@ h1{margin:0;font-family:var(--display);font-weight:400;font-size:34px;line-heigh
         </div>
       </div>
     </section>
+
+    <!-- Video poker -->
+    <section class="game" id="poker" aria-labelledby="vp-title" hidden>
+      <div class="game-head">
+        <h1 id="vp-title">Jacks or Better</h1>
+        <p class="lede">Five-card draw poker. Hold the cards you want, then draw once. A pair of jacks or better pays.</p>
+      </div>
+      <div class="machine">
+        <div class="paytable vp-pays" id="vp-pays"><h2>Pays, times your bet</h2></div>
+        <div class="vp-hand" id="vp-hand" aria-label="Your hand"></div>
+        <div class="controls">
+          <div class="bet" data-game="poker"><span class="lbl">Bet</span><button type="button" data-d="-1" aria-label="Lower bet">−</button><output aria-live="polite">25</output><button type="button" data-d="1" aria-label="Raise bet">+</button></div>
+          <button class="btn" id="vp-go" type="button">Deal</button>
+        </div>
+      </div>
+      <p class="msg" id="vp-msg" aria-live="polite">Deal five cards, then tap the ones you want to keep.</p>
+    </section>
+
+    <!-- Baccarat -->
+    <section class="game" id="baccarat" aria-labelledby="bac-title" hidden>
+      <div class="game-head">
+        <h1 id="bac-title">Baccarat</h1>
+        <p class="lede">Punto banco from an eight-deck shoe. Bet on the hand that lands closest to 9. Both hands draw by the house rules.</p>
+      </div>
+      <div class="felt flat">
+        <div class="bac-seats">
+          <div class="seat" id="bac-p-seat">
+            <div class="seat-label"><i class="dot P"></i>Player <span class="total" id="bac-p-total"></span></div>
+            <div class="hand" id="bac-p" aria-label="Player hand"></div>
+          </div>
+          <div class="seat" id="bac-b-seat">
+            <div class="seat-label"><i class="dot B"></i>Banker <span class="total" id="bac-b-total"></span></div>
+            <div class="hand" id="bac-b" aria-label="Banker hand"></div>
+          </div>
+        </div>
+        <div class="felt-rule"><b>Tie pays 8 to 1</b><small>Banker wins pay 19 to 20</small></div>
+      </div>
+      <p class="msg" id="bac-msg" aria-live="polite">Pick a side, set your bet, and deal.</p>
+      <div class="pick-row" role="group" aria-label="Choose your bet">
+        <button class="pick" type="button" data-pick="player" aria-pressed="true"><span><i class="dot P"></i>Player</span><small>Pays 1 to 1</small></button>
+        <button class="pick" type="button" data-pick="tie" aria-pressed="false"><span><i class="dot T"></i>Tie</span><small>Pays 8 to 1</small></button>
+        <button class="pick" type="button" data-pick="banker" aria-pressed="false"><span><i class="dot B"></i>Banker</span><small>Pays 19 to 20</small></button>
+      </div>
+      <div class="controls">
+        <div class="bet" data-game="baccarat"><span class="lbl">Bet</span><button type="button" data-d="-1" aria-label="Lower bet">−</button><output aria-live="polite">25</output><button type="button" data-d="1" aria-label="Raise bet">+</button></div>
+        <button class="btn" id="bac-deal" type="button">Deal</button>
+      </div>
+      <div class="road" id="bac-road"></div>
+    </section>
+
+    <!-- Crash -->
+    <section class="game" id="crash" aria-labelledby="cr-title" hidden>
+      <div class="game-head">
+        <h1 id="cr-title">Crash</h1>
+        <p class="lede">The multiplier climbs until it crashes. Cash out before it does, or set an automatic cash-out.</p>
+      </div>
+      <div class="crash-stage">
+        <canvas id="cr-canvas" aria-hidden="true"></canvas>
+        <div class="crash-mult" id="cr-mult"><span id="cr-num">1.00×</span><small id="cr-sub">Ready</small></div>
+      </div>
+      <div class="history pills" id="cr-hist" hidden></div>
+      <p class="msg" id="cr-msg" aria-live="polite">Set a bet and an auto cash-out, then start.</p>
+      <div class="controls duo">
+        <div class="bet" data-game="crash"><span class="lbl">Bet</span><button type="button" data-d="-1" aria-label="Lower bet">−</button><output aria-live="polite">25</output><button type="button" data-d="1" aria-label="Raise bet">+</button></div>
+        <div class="bet" data-game="auto" data-levels="0,1.2,1.5,2,3,5,10"><span class="lbl">Auto</span><button type="button" data-d="-1" aria-label="Lower auto cash-out">−</button><output aria-live="polite">2.00×</output><button type="button" data-d="1" aria-label="Raise auto cash-out">+</button></div>
+      </div>
+      <button class="btn" id="cr-go" type="button">Start round</button>
+    </section>
   </main>
 
   <p class="fine">Velvet Room is a free game. Chips can't be bought, cashed out, or exchanged for prizes, and you can top up for free whenever you run out. If gambling stops being fun, help is available at <b>1-800-GAMBLER</b>.</p>
@@ -290,6 +413,9 @@ h1{margin:0;font-family:var(--display);font-weight:400;font-size:34px;line-heigh
     <button class="tab" type="button" data-game="slots"><span class="g">7</span>Slots</button>
     <button class="tab" type="button" data-game="blackjack"><span class="g">21</span>Blackjack</button>
     <button class="tab" type="button" data-game="roulette"><span class="g">0</span>Roulette</button>
+    <button class="tab" type="button" data-game="poker"><span class="g">J</span>Poker</button>
+    <button class="tab" type="button" data-game="baccarat"><span class="g">9</span>Baccarat</button>
+    <button class="tab" type="button" data-game="crash"><span class="g">×</span>Crash</button>
   </div>
 </nav>
 
@@ -338,17 +464,20 @@ h1{margin:0;font-family:var(--display);font-weight:400;font-size:34px;line-heigh
 
   /* ---------- Bet steppers ---------- */
   const LEVELS = [5, 10, 25, 50, 100, 250, 500, 1000];
-  const bets = Object.assign({ slots: 25, blackjack: 25, roulette: 25 }, store.get('vr.bets', {}));
+  const bets = Object.assign({ slots: 25, blackjack: 25, roulette: 25, poker: 25, baccarat: 25, crash: 25, auto: 2 }, store.get('vr.bets', {}));
   $$('.bet').forEach(el => {
     const key = el.dataset.game, out = $('output', el);
-    const show = () => { out.textContent = fmt(bets[key]); };
+    const levels = el.dataset.levels ? el.dataset.levels.split(',').map(Number) : LEVELS;
+    if (!levels.includes(bets[key])) bets[key] = levels[Math.min(2, levels.length - 1)];
+    const show = () => {
+      out.textContent = key === 'auto' ? (bets[key] ? bets[key].toFixed(2) + '×' : 'Off') : fmt(bets[key]);
+    };
     el.addEventListener('click', e => {
       const b = e.target.closest('button[data-d]');
       if (!b || b.disabled) return;
-      let i = LEVELS.indexOf(bets[key]);
-      if (i < 0) i = 2;
-      i = Math.max(0, Math.min(LEVELS.length - 1, i + Number(b.dataset.d)));
-      bets[key] = LEVELS[i];
+      let i = levels.indexOf(bets[key]);
+      i = Math.max(0, Math.min(levels.length - 1, i + Number(b.dataset.d)));
+      bets[key] = levels[i];
       store.set('vr.bets', bets);
       show();
     });
@@ -470,11 +599,12 @@ h1{margin:0;font-family:var(--display);font-weight:400;font-size:34px;line-heigh
     for (let i = a.length - 1; i > 0; i--) { const j = rand(i + 1); [a[i], a[j]] = [a[j], a[i]]; }
     return a;
   }
-  function newShoe() {
-    shoe = [];
-    for (let d = 0; d < 6; d++) for (const s of SUITS) for (const r of RANKS) shoe.push({ r, s });
-    shuffle(shoe);
+  function makeShoe(decks) {
+    const cards = [];
+    for (let d = 0; d < decks; d++) for (const s of SUITS) for (const r of RANKS) cards.push({ r, s });
+    return shuffle(cards);
   }
+  function newShoe() { shoe = makeShoe(6); }
   function draw() { if (shoe.length < 60) newShoe(); return shoe.pop(); }
   function score(cards) {
     let t = 0, aces = 0;
@@ -804,8 +934,364 @@ h1{margin:0;font-family:var(--display);font-weight:400;font-size:34px;line-heigh
   renderHistory();
   renderBets();
 
+  /* ---------- Video poker ---------- */
+  const VP_PAYS = [
+    ['rf', 'Royal flush', 250], ['sf', 'Straight flush', 50], ['4k', 'Four of a kind', 25],
+    ['fh', 'Full house', 9], ['fl', 'Flush', 6], ['st', 'Straight', 4],
+    ['3k', 'Three of a kind', 3], ['2p', 'Two pair', 2], ['jb', 'Jacks or better', 1]
+  ];
+  const vpPays = $('#vp-pays'), vpHand = $('#vp-hand'), vpGo = $('#vp-go'), vpMsg = $('#vp-msg');
+  VP_PAYS.forEach(([k, name, pay]) => {
+    const row = document.createElement('div');
+    row.className = 'pt';
+    row.dataset.row = k;
+    row.innerHTML = `<span>${name}</span><b>${pay}×</b>`;
+    vpPays.append(row);
+  });
+  const vp = { phase: 'idle', deck: [], hand: [], held: [], bet: 0 };
+  const rankValue = r => ({ A: 14, K: 13, Q: 12, J: 11 })[r] || Number(r);
+  function vpRank(cards) {
+    const vals = cards.map(c => rankValue(c.r)).sort((a, b) => a - b);
+    const flush = cards.every(c => c.s === cards[0].s);
+    const counts = {};
+    vals.forEach(v => { counts[v] = (counts[v] || 0) + 1; });
+    const groups = Object.entries(counts).map(([v, n]) => [Number(v), n]).sort((a, b) => b[1] - a[1] || b[0] - a[0]);
+    const straight = groups.length === 5 && (vals[4] - vals[0] === 4 || vals.join() === '2,3,4,5,14');
+    if (straight && flush) return vals[0] === 10 ? 'rf' : 'sf';
+    if (groups[0][1] === 4) return '4k';
+    if (groups[0][1] === 3 && groups[1][1] === 2) return 'fh';
+    if (flush) return 'fl';
+    if (straight) return 'st';
+    if (groups[0][1] === 3) return '3k';
+    if (groups[0][1] === 2 && groups[1][1] === 2) return '2p';
+    if (groups[0][1] === 2 && groups[0][0] >= 11) return 'jb';
+    return null;
+  }
+  const vpEntry = k => VP_PAYS.find(p => p[0] === k);
+  const vpSlots = Array.from({ length: 5 }, (_, i) => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'vp-slot';
+    b.disabled = true;
+    b.setAttribute('aria-pressed', 'false');
+    const back = cardEl({ r: 'A', s: '♠' }, true);
+    back.classList.add('still');
+    const tag = document.createElement('span');
+    tag.className = 'held-tag';
+    tag.textContent = 'Held';
+    b.append(back, tag);
+    b.addEventListener('click', () => {
+      if (vp.phase !== 'hold') return;
+      vp.held[i] = !vp.held[i];
+      b.classList.toggle('held', vp.held[i]);
+      b.setAttribute('aria-pressed', String(vp.held[i]));
+    });
+    vpHand.append(b);
+    return b;
+  });
+  function vpSetCard(i, delay) {
+    const el = cardEl(vp.hand[i], false);
+    el.style.animationDelay = delay + 'ms';
+    vpSlots[i].replaceChild(el, vpSlots[i].firstElementChild);
+  }
+  function vpSay(text, kind) {
+    vpMsg.textContent = text;
+    vpMsg.className = 'msg' + (kind ? ' ' + kind : '');
+  }
+  const vpMark = k => $$('.pt', vpPays).forEach(r => r.classList.toggle('hit', r.dataset.row === k));
+
+  vpGo.addEventListener('click', async () => {
+    if (vp.phase === 'busy') return;
+    if (vp.phase !== 'hold') {
+      const bet = bets.poker;
+      if (balance < bet) { vpSay(`You need ${fmt(bet)} chips to deal. Lower the bet, or top up with +1,000.`, 'lose'); return; }
+      setBalance(balance - bet);
+      vp.bet = bet;
+      vp.deck = makeShoe(1);
+      vp.hand = vp.deck.splice(-5);
+      vp.held = [false, false, false, false, false];
+      vp.phase = 'busy';
+      vpGo.disabled = true;
+      lockBet('poker', true);
+      vpMark(null);
+      vpSlots.forEach((s, i) => {
+        s.classList.remove('held');
+        s.setAttribute('aria-pressed', 'false');
+        vpSetCard(i, reduce ? 0 : i * 90);
+      });
+      await sleep(reduce ? 0 : 520);
+      const k = vpRank(vp.hand);
+      vpSay(k ? `Dealt: ${vpEntry(k)[1]}. Tap cards to hold, then draw.` : 'Tap the cards you want to hold, then draw.', '');
+      vp.phase = 'hold';
+      vpSlots.forEach(s => { s.disabled = false; });
+      vpGo.disabled = false;
+      vpGo.textContent = 'Draw';
+      return;
+    }
+    vp.phase = 'busy';
+    vpGo.disabled = true;
+    vpSlots.forEach(s => { s.disabled = true; });
+    let n = 0;
+    vp.hand.forEach((c, i) => {
+      if (vp.held[i]) return;
+      vp.hand[i] = vp.deck.pop();
+      vpSetCard(i, reduce ? 0 : (n++) * 90);
+    });
+    await sleep(reduce ? 0 : n * 90 + 320);
+    const k = vpRank(vp.hand);
+    if (k) {
+      const [, name, pay] = vpEntry(k);
+      const won = vp.bet * pay;
+      setBalance(balance + won);
+      vpMark(k);
+      vpSay(pay === 1 ? `${name}. Your bet comes back.` : `${name} pays ${pay}×. You win ${fmt(won - vp.bet)}.`, pay === 1 ? 'push' : 'win');
+    } else {
+      vpSay(`No winning hand. You lose ${fmt(vp.bet)}.`, 'lose');
+    }
+    vp.phase = 'done';
+    vpGo.disabled = false;
+    vpGo.textContent = 'Deal';
+    lockBet('poker', false);
+  });
+
+  /* ---------- Baccarat ---------- */
+  let bacShoe = [];
+  const bacDraw = () => { if (bacShoe.length < 20) bacShoe = makeShoe(8); return bacShoe.pop(); };
+  const bacVal = c => c.r === 'A' ? 1 : (c.r === '10' || c.r === 'J' || c.r === 'Q' || c.r === 'K') ? 0 : Number(c.r);
+  const bacTotal = cs => cs.reduce((a, c) => a + bacVal(c), 0) % 10;
+  const PICKS = { player: 'P', banker: 'B', tie: 'T' };
+  const bac = { pick: store.get('vr.bacPick', 'player'), busy: false, p: [], b: [] };
+  if (!PICKS[bac.pick]) bac.pick = 'player';
+  const road = (store.get('vr.road', []) || []).filter(x => x === 'P' || x === 'B' || x === 'T').slice(-36);
+  const bacEls = { p: $('#bac-p'), b: $('#bac-b') }, bacMsg = $('#bac-msg'), bacDeal = $('#bac-deal');
+
+  function bacTotals() {
+    $('#bac-p-total').textContent = bac.p.length ? String(bacTotal(bac.p)) : '';
+    $('#bac-b-total').textContent = bac.b.length ? String(bacTotal(bac.b)) : '';
+  }
+  async function bacGive(side) {
+    const c = bacDraw();
+    bac[side].push(c);
+    bacEls[side].append(cardEl(c, false));
+    bacTotals();
+    await sleep(reduce ? 0 : 420);
+    return c;
+  }
+  function bacSay(text, kind) {
+    bacMsg.textContent = text;
+    bacMsg.className = 'msg' + (kind ? ' ' + kind : '');
+  }
+  function renderRoad() {
+    const names = { P: 'Player', B: 'Banker', T: 'Tie' };
+    $('#bac-road').innerHTML = '<span class="section-label">Bead road</span>' + (road.length
+      ? road.map(x => `<i class="${x}" title="${names[x]}">${x}</i>`).join('')
+      : '<span class="road-empty">Each result lands here, oldest first.</span>');
+  }
+  function renderPicks() {
+    $$('.pick').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.pick === bac.pick)));
+  }
+  $$('.pick').forEach(b => b.addEventListener('click', () => {
+    if (bac.busy) return;
+    bac.pick = b.dataset.pick;
+    store.set('vr.bacPick', bac.pick);
+    renderPicks();
+  }));
+  bacDeal.addEventListener('click', async () => {
+    if (bac.busy) return;
+    const bet = bets.baccarat;
+    if (balance < bet) { bacSay(`You need ${fmt(bet)} chips to deal. Lower the bet, or top up with +1,000.`, 'lose'); return; }
+    setBalance(balance - bet);
+    bac.busy = true;
+    bacDeal.disabled = true;
+    $$('.pick').forEach(b => { b.disabled = true; });
+    lockBet('baccarat', true);
+    bac.p = []; bac.b = [];
+    bacEls.p.replaceChildren(); bacEls.b.replaceChildren();
+    $('#bac-p-seat').classList.remove('won'); $('#bac-b-seat').classList.remove('won');
+    bacTotals();
+    bacSay('Dealing…', '');
+
+    await bacGive('p'); await bacGive('b'); await bacGive('p'); await bacGive('b');
+    let pt = bacTotal(bac.p), bt = bacTotal(bac.b);
+    const natural = pt >= 8 || bt >= 8;
+    if (!natural) {
+      let p3 = null;
+      if (pt <= 5) p3 = bacVal(await bacGive('p'));
+      const b0 = bacTotal(bac.b);
+      const bankerDraws = p3 === null ? b0 <= 5
+        : b0 <= 2 || (b0 === 3 && p3 !== 8) || (b0 === 4 && p3 >= 2 && p3 <= 7) ||
+          (b0 === 5 && p3 >= 4 && p3 <= 7) || (b0 === 6 && (p3 === 6 || p3 === 7));
+      if (bankerDraws) await bacGive('b');
+      pt = bacTotal(bac.p); bt = bacTotal(bac.b);
+    }
+    const res = pt > bt ? 'P' : bt > pt ? 'B' : 'T';
+    const mine = PICKS[bac.pick];
+    let ret = 0;
+    if (res === mine) ret = mine === 'P' ? bet * 2 : mine === 'B' ? bet + Math.floor(bet * 0.95) : bet * 9;
+    else if (res === 'T') ret = bet;
+    if (ret) setBalance(balance + ret);
+    const net = ret - bet;
+    if (res !== 'T') $(res === 'P' ? '#bac-p-seat' : '#bac-b-seat').classList.add('won');
+    const head = res === 'T' ? `Tie at ${pt}.`
+      : `${natural ? 'Natural. ' : ''}${res === 'P' ? 'Player' : 'Banker'} wins ${Math.max(pt, bt)} to ${Math.min(pt, bt)}.`;
+    const tail = net > 0 ? `You win ${fmt(net)}.` : net === 0 ? 'Your bet comes back.' : `You lose ${fmt(bet)}.`;
+    bacSay(`${head} ${tail}`, net > 0 ? 'win' : net === 0 ? 'push' : 'lose');
+    road.push(res);
+    if (road.length > 36) road.shift();
+    store.set('vr.road', road);
+    renderRoad();
+    bac.busy = false;
+    bacDeal.disabled = false;
+    $$('.pick').forEach(b => { b.disabled = false; });
+    lockBet('baccarat', false);
+  });
+  renderPicks();
+  renderRoad();
+
+  /* ---------- Crash ---------- */
+  const K = 0.00013; // multiplier = e^(K·ms): 2× at ~5.3s, 10× at ~17.7s
+  const crCanvas = $('#cr-canvas'), crCtx = crCanvas.getContext('2d');
+  const crNum = $('#cr-num'), crSub = $('#cr-sub'), crMult = $('#cr-mult'), crGo = $('#cr-go'), crMsg = $('#cr-msg'), crHistEl = $('#cr-hist');
+  const cr = { running: false, inPlay: false, start: 0, crash: 1, bet: 0, auto: 0, cashedAt: 0, t: 0, m: 1, state: 'idle' };
+  const crHist = (store.get('vr.crashes', []) || []).filter(x => typeof x === 'number' && x >= 1).slice(0, 10);
+
+  function crashPoint() {
+    const a = new Uint32Array(1);
+    crypto.getRandomValues(a);
+    const u = a[0] / 4294967296;
+    return Math.min(1000, Math.max(1, Math.floor(97 / (1 - u)) / 100));
+  }
+  function sizeCrash() {
+    const w = crCanvas.clientWidth, h = crCanvas.clientHeight;
+    if (!w || !h) return false;
+    const d = Math.min(window.devicePixelRatio || 1, 2);
+    if (crCanvas.width !== Math.round(w * d)) { crCanvas.width = Math.round(w * d); crCanvas.height = Math.round(h * d); }
+    return true;
+  }
+  function drawCrash(t, m, state) {
+    if (!sizeCrash()) return;
+    const W = crCanvas.width, H = crCanvas.height, d = W / crCanvas.clientWidth, c = crCtx;
+    const L = 42 * d, R = 14 * d, T = 16 * d, B = 26 * d;
+    const xmax = Math.max(8000, t * 1.15), ymax = Math.max(2, 1 + (m - 1) * 1.25);
+    const X = ms => L + ms / xmax * (W - L - R);
+    const Y = v => H - B - (v - 1) / (ymax - 1) * (H - T - B);
+    c.clearRect(0, 0, W, H);
+    c.font = `600 ${11 * d}px Manrope, -apple-system, sans-serif`;
+    c.fillStyle = css('--muted');
+    c.strokeStyle = css('--line');
+    c.lineWidth = d;
+    c.textAlign = 'right'; c.textBaseline = 'middle';
+    const step = [0.25, 0.5, 1, 2, 5, 10, 25, 50, 100, 250].find(s => (ymax - 1) / s <= 4) || 500;
+    for (let v = 1; v <= ymax + 1e-9; v += step) {
+      const y = Y(v);
+      c.beginPath(); c.moveTo(L, y); c.lineTo(W - R, y); c.stroke();
+      c.fillText(String(+v.toFixed(2)) + '×', L - 6 * d, y);
+    }
+    c.textAlign = 'center'; c.textBaseline = 'top';
+    const ts = xmax <= 12000 ? 2000 : xmax <= 30000 ? 5000 : 10000;
+    for (let s = ts; s <= xmax; s += ts) c.fillText(s / 1000 + 's', X(s), H - B + 7 * d);
+    if (state === 'idle') return;
+    const col = css(state === 'bust' ? '--lose' : '--brass');
+    const N = 80, pts = [];
+    for (let i = 0; i <= N; i++) { const ti = t * i / N; pts.push([X(ti), Y(Math.exp(K * ti))]); }
+    c.beginPath(); c.moveTo(pts[0][0], H - B);
+    pts.forEach(p => c.lineTo(p[0], p[1]));
+    c.lineTo(pts[N][0], H - B); c.closePath();
+    c.globalAlpha = 0.18; c.fillStyle = col; c.fill(); c.globalAlpha = 1;
+    c.beginPath();
+    pts.forEach((p, i) => (i ? c.lineTo(p[0], p[1]) : c.moveTo(p[0], p[1])));
+    c.strokeStyle = col; c.lineWidth = 3 * d; c.lineJoin = 'round'; c.stroke();
+    c.beginPath(); c.arc(pts[N][0], pts[N][1], 5 * d, 0, 2 * Math.PI); c.fillStyle = col; c.fill();
+    if (cr.cashedAt) {
+      const tc = Math.log(cr.cashedAt) / K;
+      if (tc <= t) {
+        c.beginPath(); c.arc(X(tc), Y(cr.cashedAt), 7 * d, 0, 2 * Math.PI);
+        c.strokeStyle = css('--win'); c.lineWidth = 3 * d; c.stroke();
+      }
+    }
+  }
+  function crShow(m, sub, cls) {
+    crNum.textContent = m.toFixed(2) + '×';
+    crSub.textContent = sub;
+    crMult.className = 'crash-mult' + (cls ? ' ' + cls : '');
+  }
+  function crSay(text, kind) {
+    crMsg.textContent = text;
+    crMsg.className = 'msg' + (kind ? ' ' + kind : '');
+  }
+  function renderCrHist() {
+    crHistEl.hidden = !crHist.length;
+    crHistEl.innerHTML = '<span class="section-label">Last rounds</span>' +
+      crHist.map(x => `<i class="${x < 2 ? 'lo' : x >= 10 ? 'hi' : ''}">${x.toFixed(2)}×</i>`).join('');
+  }
+  function crCashOut(m) {
+    if (!cr.inPlay) return;
+    m = Math.floor(m * 100) / 100;
+    cr.inPlay = false;
+    cr.cashedAt = m;
+    const won = Math.floor(cr.bet * m), net = won - cr.bet;
+    setBalance(balance + won);
+    crSay(`Cashed out at ${m.toFixed(2)}×. ${net > 0 ? `You win ${fmt(net)}.` : 'Your bet comes back.'}`, net > 0 ? 'win' : 'push');
+    crGo.disabled = true;
+    crGo.textContent = 'Cashed out';
+  }
+  function crEnd() {
+    const m = cr.crash;
+    cr.running = false;
+    cr.state = 'bust'; cr.m = m; cr.t = Math.log(m) / K;
+    drawCrash(cr.t, m, 'bust');
+    crShow(m, 'Crashed', 'bust');
+    if (cr.inPlay) {
+      cr.inPlay = false;
+      crSay(`Crashed at ${m.toFixed(2)}×. You lose ${fmt(cr.bet)}.`, 'lose');
+    }
+    crHist.unshift(m);
+    crHist.length = Math.min(crHist.length, 10);
+    store.set('vr.crashes', crHist);
+    renderCrHist();
+    crGo.disabled = false;
+    crGo.textContent = 'Start round';
+    lockBet('crash', false);
+    lockBet('auto', false);
+  }
+  function crFrame(now) {
+    if (!cr.running) return;
+    const t = now - cr.start, m = Math.exp(K * t);
+    if (cr.inPlay && cr.auto && cr.auto <= cr.crash && m >= cr.auto) crCashOut(cr.auto);
+    if (m >= cr.crash) { crEnd(); return; }
+    cr.t = t; cr.m = m;
+    if (cr.inPlay) {
+      crShow(m, `Bet ${fmt(cr.bet)}`, '');
+      crGo.textContent = `Cash out ${fmt(Math.floor(cr.bet * m))}`;
+    } else {
+      crShow(m, `Cashed at ${cr.cashedAt.toFixed(2)}×`, 'safe');
+    }
+    drawCrash(t, m, 'run');
+    requestAnimationFrame(crFrame);
+  }
+  crGo.addEventListener('click', () => {
+    if (cr.inPlay) {
+      const m = Math.exp(K * (performance.now() - cr.start));
+      if (m < cr.crash) crCashOut(m);
+      return;
+    }
+    if (cr.running) return;
+    const bet = bets.crash;
+    if (balance < bet) { crSay(`You need ${fmt(bet)} chips to play. Lower the bet, or top up with +1,000.`, 'lose'); return; }
+    setBalance(balance - bet);
+    Object.assign(cr, { running: true, inPlay: true, bet, auto: bets.auto, crash: crashPoint(), cashedAt: 0, state: 'run', start: performance.now() });
+    lockBet('crash', true);
+    lockBet('auto', true);
+    crSay(cr.auto ? `Auto cash-out at ${cr.auto.toFixed(2)}×. Tap to cash out sooner.` : 'Tap Cash out before it crashes.', '');
+    crGo.textContent = `Cash out ${fmt(bet)}`;
+    requestAnimationFrame(crFrame);
+  });
+  window.addEventListener('resize', () => { if (!cr.running) drawCrash(cr.t, cr.m, cr.state); });
+  if (crHist.length) crShow(crHist[0], 'Last round', 'bust');
+  renderCrHist();
+
   /* ---------- Tabs ---------- */
-  const GAMES = ['slots', 'blackjack', 'roulette'];
+  const GAMES = ['slots', 'blackjack', 'roulette', 'poker', 'baccarat', 'crash'];
   function showGame(g) {
     if (!GAMES.includes(g)) g = 'slots';
     GAMES.forEach(x => {
@@ -813,6 +1299,7 @@ h1{margin:0;font-family:var(--display);font-weight:400;font-size:34px;line-heigh
       $(`.tab[data-game="${x}"]`).setAttribute('aria-current', x === g ? 'page' : 'false');
     });
     store.set('vr.tab', g);
+    if (g === 'crash' && !cr.running) drawCrash(cr.t, cr.m, cr.state);
   }
   $$('.tab').forEach(t => t.addEventListener('click', () => { showGame(t.dataset.game); window.scrollTo(0, 0); }));
   const hash = location.hash.slice(1);
