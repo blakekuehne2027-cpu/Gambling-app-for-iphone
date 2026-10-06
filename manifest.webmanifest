@@ -1,0 +1,14 @@
+{
+  "name": "Velvet Room Casino",
+  "short_name": "Velvet Room",
+  "description": "Free-play slots, blackjack and roulette with play-money chips.",
+  "start_url": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#22080e",
+  "theme_color": "#22080e",
+  "icons": [
+    { "src": "icon-180.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
