@@ -43,7 +43,7 @@
   --lose:#ff9b94;
   --display:"Limelight","Didot","Bodoni 72",Georgia,serif;
   --body:"Manrope",-apple-system,system-ui,"Segoe UI",sans-serif;
-  --tabbar:64px;
+  --tabbar:0px;
   color-scheme:dark;
 }
 *{box-sizing:border-box}
@@ -224,12 +224,150 @@ h1{margin:0;font-family:var(--display);font-weight:400;font-size:34px;line-heigh
 .fine{margin:28px 0 0;font-size:12.5px;color:var(--muted);max-width:52ch}
 .fine b{color:var(--ivory);user-select:all;-webkit-user-select:all}
 
-/* Tab bar */
-.tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;padding-bottom:env(safe-area-inset-bottom,0px);background:var(--velvet-glass);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-top:1px solid var(--line)}
-.tabs-inner{max-width:540px;height:var(--tabbar);margin:0 auto;padding-inline:4px;display:grid;grid-template-columns:repeat(6,minmax(0,1fr))}
-.tab{min-width:0;padding:0;border:0;background:none;display:grid;place-items:center;align-content:center;gap:4px;color:var(--muted);font-size:10.5px;font-weight:800;letter-spacing:.01em;white-space:nowrap}
-.tab .g{font-family:var(--display);font-size:20px;line-height:1;letter-spacing:0}
-.tab[aria-current="page"]{color:var(--brass)}
+/* Lobby */
+.back{display:flex;align-items:center;gap:6px;padding:8px 14px 8px 10px;border:1.5px solid var(--line);border-radius:999px;background:var(--velvet-2);font-weight:800;font-size:14px;color:var(--brass)}
+.back::before{content:"";width:8px;height:8px;border-left:2.5px solid currentColor;border-bottom:2.5px solid currentColor;transform:rotate(45deg);margin-left:4px}
+.lobby{display:grid;gap:22px;padding-block:20px 0}
+.lobby-hero{display:grid;gap:6px}
+.lobby-list{display:grid;gap:22px}
+.lobby-hero h1{font-size:38px}
+.lobby-group{display:grid;gap:10px}
+.lobby-group h2{margin:0;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:var(--muted)}
+.tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.tile{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:center;padding:10px;text-align:left;border:1px solid var(--line);border-radius:16px;background:var(--velvet-2);transition:transform .1s,border-color .15s}
+.tiles > .tile:last-child:nth-child(odd){grid-column:1/-1}
+.tile:active{transform:scale(.97)}
+.tile:hover{border-color:var(--brass)}
+.tile .glyph{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;font-family:var(--display);font-size:20px;line-height:1;background:var(--tint);color:var(--ivory)}
+.tile[data-cat="originals"]{--tint:var(--brass-dim)}
+.tile[data-cat="cards"]{--tint:var(--felt-hi)}
+.tile[data-cat="wheels"]{--tint:var(--red)}
+.tile[data-cat="dice"]{--tint:var(--blue)}
+.tile b{display:block;font-size:15px;line-height:1.2}
+.tile small{display:block;margin-top:2px;font-size:12px;line-height:1.3;color:var(--muted)}
+.tile .new{position:absolute;top:-6px;right:8px;padding:1px 7px;border-radius:999px;background:var(--brass);color:var(--velvet);font-size:9.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
+
+/* Shared bits for the newer games */
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.stat{display:grid;gap:2px;padding:8px 10px;border:1px solid var(--line);border-radius:12px;background:var(--velvet-2);min-width:0}
+.stat small{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:var(--muted)}
+.stat b{font-size:17px;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.seg{display:flex;gap:4px;padding:4px;border:1px solid var(--line);border-radius:14px;background:var(--velvet-2)}
+.seg button{flex:1;min-height:40px;border:0;border-radius:10px;background:none;color:var(--muted);font-weight:800;font-size:14px}
+.seg button[aria-pressed="true"]{background:var(--velvet-3);color:var(--brass);box-shadow:inset 0 0 0 1px var(--brass)}
+.seg button:disabled{opacity:.5}
+.btn-row{display:flex;gap:10px}
+.stage{position:relative;display:grid;place-items:center;align-content:center;gap:6px;min-height:170px;padding:18px;border:2px solid var(--brass-dim);border-radius:18px;background:radial-gradient(120% 100% at 50% 100%,var(--velvet-3),var(--black))}
+.bignum{font-family:var(--display);font-size:clamp(48px,16vw,72px);line-height:1;font-variant-numeric:tabular-nums}
+.bignum.win{color:var(--win)}
+.bignum.lose{color:var(--lose)}
+.stage small{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.history.pills i.win{background:var(--felt-hi);color:var(--win)}
+.cardrow{display:flex;justify-content:center;gap:14px;flex-wrap:wrap}
+.card.big{width:84px;height:118px}
+.card.big .cr{font-size:18px}
+.card.big .cs{font-size:42px}
+.slot-label{display:grid;gap:6px;justify-items:center;font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--felt-ink)}
+.cardhole{width:84px;height:118px;display:grid;place-items:center;border:1.5px dashed var(--felt-ink);border-radius:8px;opacity:.5}
+
+/* Mines */
+.mines-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;padding:10px;border:2px solid var(--brass-dim);border-radius:18px;background:var(--black)}
+.mtile{aspect-ratio:1;border:1px solid var(--line);border-radius:12px;background:linear-gradient(var(--velvet-3),var(--velvet-2));font-size:clamp(22px,7vw,30px);line-height:1;box-shadow:0 3px 0 var(--velvet);transition:transform .1s}
+.mtile:not(:disabled):active{transform:translateY(2px)}
+.mtile.gem{background:var(--felt-hi);border-color:var(--win);animation:pop .3s}
+.mtile.boom{background:var(--red);border-color:var(--lose);animation:pop .3s}
+.mtile.ghost{opacity:.4}
+
+/* Tower */
+.tower{display:grid;gap:6px;padding:10px;border:2px solid var(--brass-dim);border-radius:18px;background:var(--black)}
+.trow{display:grid;grid-template-columns:54px repeat(var(--w),minmax(0,1fr));gap:6px;align-items:center;opacity:.55}
+.trow.active,.trow.done{opacity:1}
+.trow .tm{font-size:12px;font-weight:800;color:var(--muted);font-variant-numeric:tabular-nums;text-align:right;padding-right:4px}
+.trow.active .tm{color:var(--brass)}
+.ttile{height:38px;border:1px solid var(--line);border-radius:10px;background:var(--velvet-2);font-size:20px;line-height:1}
+.trow.active .ttile{background:var(--velvet-3);border-color:var(--brass)}
+.ttile.safe{background:var(--felt-hi);border-color:var(--win)}
+.ttile.trap{background:var(--red);border-color:var(--lose)}
+.ttile.ghost{opacity:.45}
+
+/* Plinko */
+.plinko-stage{border:2px solid var(--brass-dim);border-radius:18px;background:radial-gradient(120% 100% at 50% 0%,var(--velvet-3),var(--black));overflow:hidden}
+.plinko-stage canvas{display:block;width:100%;aspect-ratio:1/1}
+
+/* Dice game */
+.dtrack{position:relative;height:14px;margin:34px 6px 6px;border-radius:7px}
+.dmark{position:absolute;top:50%;left:50%;width:22px;height:22px;margin:-11px 0 0 -11px;border-radius:6px;background:var(--ivory);box-shadow:0 2px 6px rgba(0,0,0,.5);transition:left .5s cubic-bezier(.2,.8,.2,1)}
+.dmark span{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);padding:2px 8px;border-radius:8px;background:var(--ivory);color:var(--velvet);font-size:13px;font-weight:800;white-space:nowrap;font-variant-numeric:tabular-nums}
+.dscale{display:flex;justify-content:space-between;padding:0 6px;font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
+input[type="range"]{width:100%;accent-color:var(--brass);height:28px}
+
+/* Coin flip */
+.coin-wrap{perspective:800px;display:grid;place-items:center;padding-block:8px}
+.coin{position:relative;width:150px;height:150px;transform-style:preserve-3d;transition:transform 1.1s cubic-bezier(.3,.9,.3,1)}
+.coin-face{position:absolute;inset:0;border-radius:50%;display:grid;place-items:center;backface-visibility:hidden;-webkit-backface-visibility:hidden;font-family:var(--display);font-size:56px;color:var(--velvet);background:radial-gradient(circle at 35% 30%,var(--ivory),var(--brass) 55%,var(--brass-dim));box-shadow:inset 0 0 0 8px var(--brass-dim),inset 0 0 0 11px var(--brass)}
+.coin-face.tails{transform:rotateY(180deg);background:radial-gradient(circle at 35% 30%,var(--ivory),var(--ivory-shade) 55%,var(--muted))}
+
+/* Keno */
+.keno-grid{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:5px;padding:10px;border:2px solid var(--brass-dim);border-radius:18px;background:var(--black)}
+.kn{aspect-ratio:1;border:1px solid var(--line);border-radius:8px;background:var(--velvet-2);font-weight:800;font-size:14px;font-variant-numeric:tabular-nums}
+.kn.picked{background:var(--velvet-3);border-color:var(--brass);color:var(--brass)}
+.kn.drawn{box-shadow:inset 0 0 0 2px var(--muted);color:var(--muted)}
+.kn.hit{background:var(--brass);color:var(--velvet);border-color:var(--brass);animation:pop .3s}
+.kpay{display:flex;flex-wrap:wrap;gap:6px}
+.kpay span{padding:4px 9px;border-radius:999px;border:1px solid var(--line);font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums}
+.kpay span.hit{background:var(--brass);color:var(--velvet);border-color:var(--brass)}
+
+/* Scratch */
+.scratch{position:relative;padding:12px;border:2px solid var(--brass);border-radius:18px;background:var(--velvet-2)}
+.sgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.scell{aspect-ratio:1.25;display:grid;place-items:center;align-content:center;border-radius:10px;background:var(--ivory);color:var(--velvet)}
+.scell b{font-family:var(--display);font-size:24px;font-weight:400;line-height:1}
+.scell small{font-size:11px;font-weight:800;color:var(--brass-dim)}
+.scell.match{background:var(--brass);animation:pop .4s}
+.scratch canvas{position:absolute;inset:12px;width:calc(100% - 24px);height:calc(100% - 24px);border-radius:10px;touch-action:none;cursor:crosshair;transition:opacity .4s}
+.scratch canvas.gone{opacity:0;pointer-events:none}
+
+/* Dice faces */
+.dice{display:flex;justify-content:center;gap:12px;min-height:60px}
+.die{width:56px;height:56px;padding:8px;border-radius:12px;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);background:var(--ivory);box-shadow:inset 0 -3px 0 var(--ivory-shade),0 4px 10px rgba(0,0,0,.4)}
+.die i{width:10px;height:10px;place-self:center;border-radius:50%;background:var(--black);visibility:hidden}
+.die i.on{visibility:visible}
+.die.red{background:var(--red);box-shadow:inset 0 -3px 0 var(--velvet-3),0 4px 10px rgba(0,0,0,.4)}
+.die.red i{background:var(--ivory)}
+.die.roll{animation:roll .5s ease-out}
+@keyframes roll{0%{transform:rotate(-200deg) scale(.6)}70%{transform:rotate(15deg) scale(1.05)}}
+.die.mini{width:30px;height:30px;padding:4px;border-radius:6px}
+.die.mini i{width:5px;height:5px}
+
+/* Craps */
+.puck-row{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
+.puck-row span{position:relative;padding:10px 0;border:1px solid var(--felt-line);border-radius:8px;text-align:center;font-family:var(--display);font-size:22px;color:var(--ivory)}
+.puck-row span.on::after{content:"ON";position:absolute;top:-10px;left:50%;transform:translateX(-50%);padding:2px 6px;border-radius:999px;background:var(--ivory);color:var(--black);font-family:var(--body);font-size:10px;font-weight:800;letter-spacing:.08em}
+.puck-row span.on{border-color:var(--ivory)}
+
+/* Chip boards (Sic Bo, Money Wheel) */
+.cboard{display:grid;gap:5px;padding:10px;border:2px solid var(--brass-dim);border-radius:16px;background:var(--felt)}
+.cboard .section-label{margin:6px 0 0;color:var(--felt-ink)}
+.crow{display:grid;grid-template-columns:repeat(var(--n),minmax(0,1fr));gap:5px}
+.cspot{position:relative;min-height:46px;padding:4px 2px;display:grid;place-items:center;align-content:center;gap:2px;border:1px solid var(--felt-line);border-radius:8px;background:var(--felt-2);color:var(--ivory);font-weight:800;font-size:14px;line-height:1.1}
+.cspot small{font-size:10.5px;font-weight:600;color:var(--felt-ink)}
+.cspot.hit{outline:3px solid var(--win);outline-offset:-1px}
+
+/* Hi-Lo */
+.hl-strip{display:flex;gap:4px;justify-content:center;flex-wrap:wrap;min-height:30px}
+.hl-strip .card{width:30px;height:42px;animation:none}
+.hl-strip .card .cr{font-size:10px;top:3px;left:4px}
+.hl-strip .card .cs{display:none}
+
+/* Derby */
+.race{display:grid;gap:6px;padding:10px;border:2px solid var(--brass-dim);border-radius:18px;background:var(--felt)}
+.lane{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;padding:6px 8px;border:1px solid var(--felt-line);border-radius:10px;background:var(--felt-2);color:var(--ivory);text-align:left}
+.lane[aria-pressed="true"]{border-color:var(--brass);box-shadow:inset 0 0 0 1px var(--brass)}
+.lane.won{background:var(--felt-hi)}
+.track{position:relative;height:30px;border-right:3px dashed var(--ivory)}
+.horse{position:absolute;top:0;left:calc(var(--x,0) * (100% - 30px));width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:13px;background:var(--silk);color:var(--silk-ink,var(--ivory));box-shadow:0 2px 4px rgba(0,0,0,.4)}
+.lane .odds{min-width:84px;text-align:right;font-size:12px;line-height:1.25;color:var(--felt-ink)}
+.lane .odds b{display:block;font-size:15px;color:var(--ivory);font-variant-numeric:tabular-nums}
 
 @media (max-width:360px){
   .reels{--cell:64px}
@@ -238,7 +376,9 @@ h1{margin:0;font-family:var(--display);font-weight:400;font-size:34px;line-heigh
   .bac-seats .card{width:48px;height:68px}
   .bac-seats .card+.card{margin-left:-16px}
   .controls.duo{grid-template-columns:1fr}
-  .tab{font-size:9.5px}
+  .tiles{gap:8px}
+  .tile .glyph{width:38px;height:38px;font-size:17px}
+  .stat b{font-size:15px}
 }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:0s!important;animation-iteration-count:1!important;transition-duration:0s!important}
@@ -248,7 +388,8 @@ h1{margin:0;font-family:var(--display);font-weight:400;font-size:34px;line-heigh
 <body>
 <div class="app">
   <header class="top">
-    <div class="brand"><b>Velvet Room</b><small>Free play · no cash value</small></div>
+    <button class="back" id="back" type="button" hidden>Lobby</button>
+    <div class="brand" id="brand"><b>Velvet Room</b><small>Free play · no cash value</small></div>
     <div class="purse">
       <button class="refill" id="refill" type="button" hidden>+1,000</button>
       <div class="pill" id="pill" aria-live="polite"><span class="chip-ico" aria-hidden="true"></span><span id="balance">1,000</span></div>
@@ -256,8 +397,16 @@ h1{margin:0;font-family:var(--display);font-weight:400;font-size:34px;line-heigh
   </header>
 
   <main>
+    <!-- Lobby -->
+    <section class="lobby" id="lobby" aria-labelledby="lobby-title">
+      <div class="lobby-hero">
+        <h1 id="lobby-title">Tonight's tables</h1>
+        <p class="lede">Twenty-one games, one stack of play-money chips. Pick a game to sit down.</p>
+      </div>
+      <div id="lobby-groups" class="lobby-list"></div>
+    </section>
     <!-- Slots -->
-    <section class="game" id="slots" aria-labelledby="slots-title">
+    <section class="game" id="slots" aria-labelledby="slots-title" hidden>
       <div class="game-head">
         <h1 id="slots-title">Diamond Sevens</h1>
         <p class="lede">Three reels, one payline. Match three across the red line, or land two cherries.</p>
@@ -399,25 +548,343 @@ h1{margin:0;font-family:var(--display);font-weight:400;font-size:34px;line-heigh
       <p class="msg" id="cr-msg" aria-live="polite">Set a bet and an auto cash-out, then start.</p>
       <div class="controls duo">
         <div class="bet" data-game="crash"><span class="lbl">Bet</span><button type="button" data-d="-1" aria-label="Lower bet">−</button><output aria-live="polite">25</output><button type="button" data-d="1" aria-label="Raise bet">+</button></div>
-        <div class="bet" data-game="auto" data-levels="0,1.2,1.5,2,3,5,10"><span class="lbl">Auto</span><button type="button" data-d="-1" aria-label="Lower auto cash-out">−</button><output aria-live="polite">2.00×</output><button type="button" data-d="1" aria-label="Raise auto cash-out">+</button></div>
+        <div class="bet" data-game="auto" data-levels="0,1.2,1.5,2,3,5,10" data-format="mult"><span class="lbl">Auto</span><button type="button" data-d="-1" aria-label="Lower auto cash-out">−</button><output aria-live="polite">2.00×</output><button type="button" data-d="1" aria-label="Raise auto cash-out">+</button></div>
       </div>
       <button class="btn" id="cr-go" type="button">Start round</button>
+    </section>
+
+    <!-- Mines -->
+    <section class="game" id="mines" aria-labelledby="mines-title" hidden>
+      <div class="game-head">
+        <h1 id="mines-title">Mines</h1>
+        <p class="lede">Twenty-five tiles, some hiding mines. Every gem you find raises the payout. Cash out before you hit a mine.</p>
+      </div>
+      <div class="stats">
+        <div class="stat"><small>Multiplier</small><b id="mines-now">1.00×</b></div>
+        <div class="stat"><small>Next gem</small><b id="mines-next">—</b></div>
+        <div class="stat"><small>Cash out</small><b id="mines-pay">0</b></div>
+      </div>
+      <div class="mines-grid" id="mines-grid" aria-label="Mine field"></div>
+      <p class="msg" id="mines-msg" aria-live="polite">Pick how many mines, set a bet, and start.</p>
+      <div class="controls duo">
+        <div class="bet" data-game="mines"></div>
+        <div class="bet" data-game="minesN" data-levels="1,3,5,10,15,20,24" data-format="plain" data-label="Mines"></div>
+      </div>
+      <button class="btn" id="mines-go" type="button">Start</button>
+    </section>
+
+    <!-- Plinko -->
+    <section class="game" id="plinko" aria-labelledby="pl-title" hidden>
+      <div class="game-head">
+        <h1 id="pl-title">Plinko</h1>
+        <p class="lede">Drop a chip through twelve rows of pegs. Where it lands sets the payout. Drop as many as you like.</p>
+      </div>
+      <div class="seg" id="pl-risk" role="group" aria-label="Risk">
+        <button type="button" data-v="low">Low risk</button><button type="button" data-v="medium">Medium</button><button type="button" data-v="high">High risk</button>
+      </div>
+      <div class="plinko-stage"><canvas id="pl-canvas" aria-label="Plinko board"></canvas></div>
+      <p class="msg" id="pl-msg" aria-live="polite">Pick a risk level and drop a chip.</p>
+      <div class="controls">
+        <div class="bet" data-game="plinko"></div>
+        <button class="btn" id="pl-go" type="button">Drop</button>
+      </div>
+    </section>
+
+    <!-- Dice -->
+    <section class="game" id="dice" aria-labelledby="dice-title" hidden>
+      <div class="game-head">
+        <h1 id="dice-title">Dice</h1>
+        <p class="lede">Roll a number from 0 to 99.99. Pick a target and whether you need to land under or over it.</p>
+      </div>
+      <div class="stage">
+        <div class="bignum" id="dice-num">50.00</div>
+        <small id="dice-sub">Last roll</small>
+      </div>
+      <div>
+        <div class="dtrack" id="dice-track"><div class="dmark" id="dice-mark"><span id="dice-tag">50.00</span></div></div>
+        <div class="dscale"><span>0</span><span>25</span><span>50</span><span>75</span><span>100</span></div>
+      </div>
+      <label class="section-label" for="dice-target">Target: <span id="dice-tv">50</span></label>
+      <input type="range" id="dice-target" min="2" max="98" step="1" value="50">
+      <div class="seg" id="dice-mode" role="group" aria-label="Roll under or over">
+        <button type="button" data-v="under">Roll under</button><button type="button" data-v="over">Roll over</button>
+      </div>
+      <div class="stats">
+        <div class="stat"><small>Win chance</small><b id="dice-chance">50%</b></div>
+        <div class="stat"><small>Pays</small><b id="dice-mult">1.98×</b></div>
+        <div class="stat"><small>Win</small><b id="dice-win">50</b></div>
+      </div>
+      <div class="history pills" id="dice-hist" hidden></div>
+      <p class="msg" id="dice-msg" aria-live="polite">Set your target and roll.</p>
+      <div class="controls">
+        <div class="bet" data-game="dice"></div>
+        <button class="btn" id="dice-go" type="button">Roll</button>
+      </div>
+    </section>
+
+    <!-- Limbo -->
+    <section class="game" id="limbo" aria-labelledby="limbo-title" hidden>
+      <div class="game-head">
+        <h1 id="limbo-title">Limbo</h1>
+        <p class="lede">Pick a target multiplier. If the result lands at or above it, you win your bet times the target.</p>
+      </div>
+      <div class="stage">
+        <div class="bignum" id="limbo-num">1.00×</div>
+        <small id="limbo-sub">Result</small>
+      </div>
+      <div class="stats">
+        <div class="stat"><small>Target</small><b id="limbo-t">2.00×</b></div>
+        <div class="stat"><small>Win chance</small><b id="limbo-chance">49.5%</b></div>
+        <div class="stat"><small>Win</small><b id="limbo-win">50</b></div>
+      </div>
+      <div class="history pills" id="limbo-hist" hidden></div>
+      <p class="msg" id="limbo-msg" aria-live="polite">Higher targets pay more and hit less often.</p>
+      <div class="controls duo">
+        <div class="bet" data-game="limbo"></div>
+        <div class="bet" data-game="limboT" data-levels="1.1,1.5,2,3,5,10,25,100" data-format="mult" data-label="Target"></div>
+      </div>
+      <button class="btn" id="limbo-go" type="button">Play</button>
+    </section>
+
+    <!-- Tower -->
+    <section class="game" id="tower" aria-labelledby="tower-title" hidden>
+      <div class="game-head">
+        <h1 id="tower-title">Tower</h1>
+        <p class="lede">Climb eight floors. Each floor hides one trap. Pick a safe tile to go up, or cash out on the way.</p>
+      </div>
+      <div class="seg" id="tower-diff" role="group" aria-label="Difficulty">
+        <button type="button" data-v="4">Easy · 4 tiles</button><button type="button" data-v="3">Medium · 3</button><button type="button" data-v="2">Hard · 2</button>
+      </div>
+      <div class="tower" id="tower-grid" aria-label="Tower floors"></div>
+      <p class="msg" id="tower-msg" aria-live="polite">Pick a difficulty, set a bet, and start climbing.</p>
+      <div class="controls">
+        <div class="bet" data-game="tower"></div>
+        <button class="btn" id="tower-go" type="button">Start</button>
+      </div>
+    </section>
+
+    <!-- Coin flip -->
+    <section class="game" id="coinflip" aria-labelledby="coin-title" hidden>
+      <div class="game-head">
+        <h1 id="coin-title">Coin Flip</h1>
+        <p class="lede">Call it in the air. A win pays 1.96×, then you can collect or flip again for double or nothing.</p>
+      </div>
+      <div class="coin-wrap"><div class="coin" id="coin"><div class="coin-face">H</div><div class="coin-face tails">T</div></div></div>
+      <div class="stats">
+        <div class="stat"><small>Streak</small><b id="coin-streak">0</b></div>
+        <div class="stat"><small>Pot</small><b id="coin-pot">0</b></div>
+        <div class="stat"><small>Next win</small><b id="coin-next">—</b></div>
+      </div>
+      <div class="seg" id="coin-pick" role="group" aria-label="Your call">
+        <button type="button" data-v="H">Heads</button><button type="button" data-v="T">Tails</button>
+      </div>
+      <p class="msg" id="coin-msg" aria-live="polite">Pick heads or tails and flip.</p>
+      <div class="controls" id="coin-start">
+        <div class="bet" data-game="coinflip"></div>
+        <button class="btn" id="coin-go" type="button">Flip</button>
+      </div>
+      <div class="btn-row" id="coin-after" hidden>
+        <button class="btn ghost" id="coin-collect" type="button">Collect</button>
+        <button class="btn" id="coin-again" type="button">Flip again</button>
+      </div>
+    </section>
+
+    <!-- Keno -->
+    <section class="game" id="keno" aria-labelledby="keno-title" hidden>
+      <div class="game-head">
+        <h1 id="keno-title">Keno</h1>
+        <p class="lede">Pick up to 10 numbers from 40. Ten balls are drawn. The more you match, the more you win.</p>
+      </div>
+      <div class="keno-grid" id="keno-grid" aria-label="Keno numbers"></div>
+      <div class="kpay" id="keno-pay" aria-label="Payouts for your picks"></div>
+      <p class="msg" id="keno-msg" aria-live="polite">Tap numbers to pick them, or use Quick pick.</p>
+      <div class="btn-row">
+        <button class="btn ghost" id="keno-quick" type="button">Quick pick</button>
+        <button class="btn ghost" id="keno-clear" type="button">Clear</button>
+      </div>
+      <div class="controls">
+        <div class="bet" data-game="keno"></div>
+        <button class="btn" id="keno-go" type="button">Draw</button>
+      </div>
+    </section>
+
+    <!-- Scratch -->
+    <section class="game" id="scratch" aria-labelledby="sc-title" hidden>
+      <div class="game-head">
+        <h1 id="sc-title">Lucky Scratch</h1>
+        <p class="lede">Buy a ticket and scratch the foil with your finger. Find three matching prizes to win that prize.</p>
+      </div>
+      <div class="scratch" id="sc-card">
+        <div class="sgrid" id="sc-grid"></div>
+        <canvas id="sc-foil" aria-label="Scratch-off foil"></canvas>
+      </div>
+      <p class="msg" id="sc-msg" aria-live="polite">The ticket price is your bet. Prizes go up to 100× the price.</p>
+      <div class="controls">
+        <div class="bet" data-game="scratch" data-label="Price"></div>
+        <button class="btn" id="sc-go" type="button">Buy ticket</button>
+      </div>
+      <button class="btn ghost" id="sc-reveal" type="button" disabled>Reveal all</button>
+    </section>
+
+    <!-- Hi-Lo -->
+    <section class="game" id="hilo" aria-labelledby="hl-title" hidden>
+      <div class="game-head">
+        <h1 id="hl-title">Hi-Lo</h1>
+        <p class="lede">Guess whether the next card is higher or lower. Each right call grows your multiplier. Aces are low.</p>
+      </div>
+      <div class="felt flat">
+        <div class="cardrow" id="hl-card"></div>
+        <div class="hl-strip" id="hl-strip" aria-label="Cards so far"></div>
+      </div>
+      <div class="stats">
+        <div class="stat"><small>Multiplier</small><b id="hl-mult">1.00×</b></div>
+        <div class="stat"><small>Cash out</small><b id="hl-pay">0</b></div>
+        <div class="stat"><small>Correct</small><b id="hl-count">0</b></div>
+      </div>
+      <p class="msg" id="hl-msg" aria-live="polite">Set a bet and start with this card, or skip it.</p>
+      <div class="btn-row">
+        <button class="btn ghost" id="hl-hi" type="button" disabled>Higher</button>
+        <button class="btn ghost" id="hl-lo" type="button" disabled>Lower</button>
+      </div>
+      <div class="controls">
+        <div class="bet" data-game="hilo"></div>
+        <button class="btn ghost" id="hl-skip" type="button" style="flex:0 0 auto">Skip</button>
+        <button class="btn" id="hl-go" type="button">Start</button>
+      </div>
+    </section>
+
+    <!-- Red Dog -->
+    <section class="game" id="reddog" aria-labelledby="rd-title" hidden>
+      <div class="game-head">
+        <h1 id="rd-title">Red Dog</h1>
+        <p class="lede">Two cards set a spread. Bet that the third card falls between them. Narrower spreads pay more. Aces are high.</p>
+      </div>
+      <div class="felt flat">
+        <div class="cardrow" id="rd-cards"></div>
+        <div class="felt-rule"><b id="rd-spread">Spread pays</b><small>1 → 5 to 1 · 2 → 4 to 1 · 3 → 2 to 1 · 4+ → 1 to 1</small></div>
+      </div>
+      <p class="msg" id="rd-msg" aria-live="polite">Set your bet and deal.</p>
+      <div class="controls" id="rd-deal-row">
+        <div class="bet" data-game="reddog"></div>
+        <button class="btn" id="rd-deal" type="button">Deal</button>
+      </div>
+      <div class="btn-row" id="rd-play-row" hidden>
+        <button class="btn ghost" id="rd-raise" type="button">Raise</button>
+        <button class="btn" id="rd-call" type="button">Call</button>
+      </div>
+    </section>
+
+    <!-- Casino War -->
+    <section class="game" id="war" aria-labelledby="war-title" hidden>
+      <div class="game-head">
+        <h1 id="war-title">Casino War</h1>
+        <p class="lede">You and the dealer each get a card. Higher card wins. On a tie, go to war or surrender half your bet.</p>
+      </div>
+      <div class="felt flat">
+        <div class="cardrow">
+          <div class="slot-label">Dealer<div id="war-d"><div class="cardhole">?</div></div></div>
+          <div class="slot-label">You<div id="war-p"><div class="cardhole">?</div></div></div>
+        </div>
+        <div class="felt-rule"><b>Ties go to war</b><small>Aces high · War win pays the raise 1 to 1</small></div>
+      </div>
+      <p class="msg" id="war-msg" aria-live="polite">Set your bet and deal.</p>
+      <div class="controls" id="war-deal-row">
+        <div class="bet" data-game="war"></div>
+        <button class="btn" id="war-deal" type="button">Deal</button>
+      </div>
+      <div class="btn-row" id="war-tie-row" hidden>
+        <button class="btn ghost" id="war-surrender" type="button">Surrender</button>
+        <button class="btn" id="war-go" type="button">Go to war</button>
+      </div>
+    </section>
+
+    <!-- Money Wheel -->
+    <section class="game" id="bigsix" aria-labelledby="mw-title" hidden>
+      <div class="game-head">
+        <h1 id="mw-title">Money Wheel</h1>
+        <p class="lede">The Big Six wheel. Stack chips on any number. If the wheel stops there, it pays that many to one.</p>
+      </div>
+      <div class="wheel-wrap" id="mw-wrap">
+        <div class="pointer" aria-hidden="true"></div>
+        <canvas id="mw-canvas" width="640" height="640" aria-label="Money wheel"></canvas>
+        <div class="result" id="mw-result" aria-live="polite"></div>
+      </div>
+      <p class="msg" id="mw-msg" aria-live="polite">Tap a spot to place chips, then spin.</p>
+      <div class="cboard" id="mw-board"></div>
+      <div class="dock">
+        <div class="dock-row">
+          <div class="bet" data-game="wheel" data-label="Chip"></div>
+          <div class="on-table">On table<b id="mw-total">0</b></div>
+        </div>
+        <div class="dock-row">
+          <button class="btn ghost" id="mw-clear" type="button">Clear</button>
+          <button class="btn ghost" id="mw-repeat" type="button">Repeat</button>
+          <button class="btn" id="mw-spin" type="button">Spin</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Craps -->
+    <section class="game" id="craps" aria-labelledby="craps-title" hidden>
+      <div class="game-head">
+        <h1 id="craps-title">Craps</h1>
+        <p class="lede">Pass line wins on 7 or 11 and loses on 2, 3 or 12. Any other roll sets the point: hit it again before a 7 to win.</p>
+      </div>
+      <div class="felt flat">
+        <div class="puck-row" id="craps-puck"><span>4</span><span>5</span><span>6</span><span>8</span><span>9</span><span>10</span></div>
+        <div class="dice" id="craps-dice"></div>
+        <div class="felt-rule"><b id="craps-state">Come-out roll</b><small>Don't pass bars 12</small></div>
+      </div>
+      <div class="seg" id="craps-line" role="group" aria-label="Your bet">
+        <button type="button" data-v="pass">Pass line</button><button type="button" data-v="dont">Don't pass</button>
+      </div>
+      <p class="msg" id="craps-msg" aria-live="polite">Pick a line, set your bet, and roll.</p>
+      <div class="controls">
+        <div class="bet" data-game="craps"></div>
+        <button class="btn" id="craps-go" type="button">Roll</button>
+      </div>
+    </section>
+
+    <!-- Sic Bo -->
+    <section class="game" id="sicbo" aria-labelledby="sb-title" hidden>
+      <div class="game-head">
+        <h1 id="sb-title">Sic Bo</h1>
+        <p class="lede">Three dice. Bet on big or small, the total, a single number, or a triple. Stack as many bets as you like.</p>
+      </div>
+      <div class="stage" style="min-height:0"><div class="dice" id="sb-dice"></div><small id="sb-sub">Total —</small></div>
+      <p class="msg" id="sb-msg" aria-live="polite">Tap the layout to place chips, then roll.</p>
+      <div class="cboard" id="sb-board"></div>
+      <div class="dock">
+        <div class="dock-row">
+          <div class="bet" data-game="sicbo" data-label="Chip"></div>
+          <div class="on-table">On table<b id="sb-total">0</b></div>
+        </div>
+        <div class="dock-row">
+          <button class="btn ghost" id="sb-clear" type="button">Clear</button>
+          <button class="btn ghost" id="sb-repeat" type="button">Repeat</button>
+          <button class="btn" id="sb-roll" type="button">Roll</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Derby -->
+    <section class="game" id="derby" aria-labelledby="derby-title" hidden>
+      <div class="game-head">
+        <h1 id="derby-title">Velvet Derby</h1>
+        <p class="lede">Six horses, fixed odds. Tap a horse to back it, then start the race. Favorites win more often and pay less.</p>
+      </div>
+      <div class="race" id="derby-race" role="group" aria-label="Horses"></div>
+      <p class="msg" id="derby-msg" aria-live="polite">Pick a horse and set your bet.</p>
+      <div class="controls">
+        <div class="bet" data-game="derby"></div>
+        <button class="btn" id="derby-go" type="button">Race</button>
+      </div>
     </section>
   </main>
 
   <p class="fine">Velvet Room is a free game. Chips can't be bought, cashed out, or exchanged for prizes, and you can top up for free whenever you run out. If gambling stops being fun, help is available at <b>1-800-GAMBLER</b>.</p>
 </div>
 
-<nav class="tabs" aria-label="Games">
-  <div class="tabs-inner">
-    <button class="tab" type="button" data-game="slots"><span class="g">7</span>Slots</button>
-    <button class="tab" type="button" data-game="blackjack"><span class="g">21</span>Blackjack</button>
-    <button class="tab" type="button" data-game="roulette"><span class="g">0</span>Roulette</button>
-    <button class="tab" type="button" data-game="poker"><span class="g">J</span>Poker</button>
-    <button class="tab" type="button" data-game="baccarat"><span class="g">9</span>Baccarat</button>
-    <button class="tab" type="button" data-game="crash"><span class="g">×</span>Crash</button>
-  </div>
-</nav>
 
 <script>
 (() => {
@@ -439,7 +906,7 @@ h1{margin:0;font-family:var(--display);font-weight:400;font-size:34px;line-heigh
   };
 
   /* ---------- Chips ---------- */
-  const START = 1000, MIN_BET = 5;
+  const START = 1000, MIN_BET = 5, onBalance = [];
   let balance = Number(store.get('vr.balance', START));
   if (!Number.isFinite(balance) || balance < 0) balance = START;
   const pill = $('#pill'), balEl = $('#balance'), refillBtn = $('#refill');
@@ -453,6 +920,7 @@ h1{margin:0;font-family:var(--display);font-weight:400;font-size:34px;line-heigh
       pill.classList.add(delta > 0 ? 'up' : 'down');
     }
     if (typeof rControls === 'function') rControls();
+    onBalance.forEach(f => f());
   }
   function setBalance(n) {
     const d = n - balance;
@@ -466,11 +934,17 @@ h1{margin:0;font-family:var(--display);font-weight:400;font-size:34px;line-heigh
   const LEVELS = [5, 10, 25, 50, 100, 250, 500, 1000];
   const bets = Object.assign({ slots: 25, blackjack: 25, roulette: 25, poker: 25, baccarat: 25, crash: 25, auto: 2 }, store.get('vr.bets', {}));
   $$('.bet').forEach(el => {
-    const key = el.dataset.game, out = $('output', el);
+    const key = el.dataset.game, format = el.dataset.format;
+    if (!el.children.length) {
+      const what = el.dataset.label || 'Bet';
+      el.innerHTML = `<span class="lbl">${what}</span><button type="button" data-d="-1" aria-label="Lower ${what.toLowerCase()}">−</button><output aria-live="polite"></output><button type="button" data-d="1" aria-label="Raise ${what.toLowerCase()}">+</button>`;
+    }
+    const out = $('output', el);
     const levels = el.dataset.levels ? el.dataset.levels.split(',').map(Number) : LEVELS;
     if (!levels.includes(bets[key])) bets[key] = levels[Math.min(2, levels.length - 1)];
     const show = () => {
-      out.textContent = key === 'auto' ? (bets[key] ? bets[key].toFixed(2) + '×' : 'Off') : fmt(bets[key]);
+      const v = bets[key];
+      out.textContent = format === 'mult' ? (v ? (v < 10 ? v.toFixed(2) : String(v)) + '×' : 'Off') : format === 'plain' ? String(v) : fmt(v);
     };
     el.addEventListener('click', e => {
       const b = e.target.closest('button[data-d]');
@@ -480,6 +954,7 @@ h1{margin:0;font-family:var(--display);font-weight:400;font-size:34px;line-heigh
       bets[key] = levels[i];
       store.set('vr.bets', bets);
       show();
+      el.dispatchEvent(new CustomEvent('betchange'));
     });
     show();
   });
@@ -1290,20 +1765,1184 @@ h1{margin:0;font-family:var(--display);font-weight:400;font-size:34px;line-heigh
   if (crHist.length) crShow(crHist[0], 'Last round', 'bust');
   renderCrHist();
 
-  /* ---------- Tabs ---------- */
-  const GAMES = ['slots', 'blackjack', 'roulette', 'poker', 'baccarat', 'crash'];
-  function showGame(g) {
-    if (!GAMES.includes(g)) g = 'slots';
-    GAMES.forEach(x => {
-      $('#' + x).hidden = x !== g;
-      $(`.tab[data-game="${x}"]`).setAttribute('aria-current', x === g ? 'page' : 'false');
-    });
-    store.set('vr.tab', g);
-    if (g === 'crash' && !cr.running) drawCrash(cr.t, cr.m, cr.state);
+  /* ---------- Helpers for the newer games ---------- */
+  const sayer = el => (text, kind) => { el.textContent = text; el.className = 'msg' + (kind ? ' ' + kind : ''); };
+  const xfmt = m => (m >= 1000 ? fmt(Math.round(m)) : m >= 100 ? m.toFixed(0) : m >= 10 ? m.toFixed(1) : m.toFixed(2)) + '×';
+  function rnd() {
+    const a = new Uint32Array(1);
+    crypto.getRandomValues(a);
+    return a[0] / 4294967296;
   }
-  $$('.tab').forEach(t => t.addEventListener('click', () => { showGame(t.dataset.game); window.scrollTo(0, 0); }));
-  const hash = location.hash.slice(1);
-  showGame(GAMES.includes(hash) ? hash : store.get('vr.tab', 'slots'));
+  function afford(bet, say) {
+    if (balance >= bet) return true;
+    say(`You need ${fmt(bet)} chips. Lower the bet, or top up with +1,000.`, 'lose');
+    return false;
+  }
+  function settleBet(say, ret, stake, head) {
+    ret = Math.floor(ret);
+    if (ret) setBalance(balance + ret);
+    const net = ret - stake;
+    say(`${head} ${net > 0 ? `You win ${fmt(net)}.` : net === 0 ? 'Your bet comes back.' : `You lose ${fmt(-net)}.`}`,
+      net > 0 ? 'win' : net === 0 ? 'push' : 'lose');
+    return net;
+  }
+  function segment(el, initial, onPick) {
+    let value = initial;
+    const render = () => $$('button', el).forEach(b => b.setAttribute('aria-pressed', String(b.dataset.v === String(value))));
+    el.addEventListener('click', e => {
+      const b = e.target.closest('button[data-v]');
+      if (!b || b.disabled) return;
+      value = b.dataset.v;
+      render();
+      if (onPick) onPick(value);
+    });
+    render();
+    return { get value() { return value; }, lock(on) { $$('button', el).forEach(b => { b.disabled = on; }); } };
+  }
+  function pills(el, label, items) {
+    el.hidden = !items.length;
+    el.innerHTML = `<span class="section-label">${label}</span>` + items.join('');
+  }
+  const PIPS = { 1: [4], 2: [0, 8], 3: [0, 4, 8], 4: [0, 2, 6, 8], 5: [0, 2, 4, 6, 8], 6: [0, 2, 3, 5, 6, 8] };
+  function dieEl(v, cls = '') {
+    const d = document.createElement('div');
+    d.className = ('die ' + cls).trim();
+    d.setAttribute('role', 'img');
+    d.setAttribute('aria-label', `Die showing ${v}`);
+    d.innerHTML = Array.from({ length: 9 }, (_, i) => `<i class="${PIPS[v].includes(i) ? 'on' : ''}"></i>`).join('');
+    return d;
+  }
+  async function rollDice(el, values, cls = '') {
+    el.replaceChildren(...values.map(v => dieEl(v, cls + ' roll')));
+    await sleep(reduce ? 0 : 560);
+  }
+  const hiRank = c => rankValue(c.r);
+  const randCard = () => ({ r: RANKS[rand(13)], s: SUITS[rand(4)] });
+  function bigCard(c) {
+    const el = cardEl(c, false);
+    el.classList.add('big');
+    return el;
+  }
+  function hole() {
+    const h = document.createElement('div');
+    h.className = 'cardhole';
+    h.textContent = '?';
+    return h;
+  }
+  function rr(c, x, y, w, h, r) {
+    c.beginPath();
+    if (c.roundRect) c.roundRect(x, y, w, h, r); else c.rect(x, y, w, h);
+  }
+
+  // Shared chip layout for Sic Bo and the Money Wheel
+  function chipBoard({ board, chipKey, totalEl, say, go, clear, repeat }) {
+    const stakes = {};
+    let last = null, locked = false;
+    const total = () => sum(stakes);
+    const unmark = () => $$('.hit', board).forEach(s => s.classList.remove('hit'));
+    function render() {
+      $$('[data-key]', board).forEach(s => {
+        const amt = stakes[s.dataset.key] || 0;
+        let badge = $('.badge', s);
+        if (!amt) { if (badge) badge.remove(); return; }
+        if (!badge) { badge = document.createElement('span'); badge.className = 'badge'; s.append(badge); }
+        badge.textContent = short(amt);
+      });
+      const t = total();
+      totalEl.textContent = fmt(t);
+      go.disabled = locked || !t;
+      clear.disabled = locked || !t;
+      repeat.disabled = locked || !!t || !last || sum(last) > balance;
+      lockBet(chipKey, locked);
+    }
+    board.addEventListener('click', e => {
+      const s = e.target.closest('[data-key]');
+      if (!s || locked) return;
+      const chip = bets[chipKey];
+      if (balance < chip) { say(`Not enough chips for a ${fmt(chip)} chip. Pick a smaller one.`, 'lose'); return; }
+      unmark();
+      setBalance(balance - chip);
+      stakes[s.dataset.key] = (stakes[s.dataset.key] || 0) + chip;
+      say('Add more chips, or go.', '');
+      render();
+    });
+    clear.addEventListener('click', () => {
+      const t = total();
+      if (!t || locked) return;
+      for (const k in stakes) delete stakes[k];
+      setBalance(balance + t);
+      say('Chips returned.', 'push');
+      render();
+    });
+    repeat.addEventListener('click', () => {
+      if (!last || locked || total()) return;
+      const t = sum(last);
+      if (t > balance) return;
+      unmark();
+      Object.assign(stakes, last);
+      setBalance(balance - t);
+      say(`Placed last round's ${fmt(t)} again.`, '');
+      render();
+    });
+    onBalance.push(render);
+    render();
+    return {
+      total,
+      lock(on) { locked = on; render(); },
+      settle(payFn) {
+        let ret = 0;
+        const t = total();
+        for (const [k, v] of Object.entries(stakes)) {
+          const r = payFn(k, v);
+          if (r > 0) { ret += r; const s = $(`[data-key="${k}"]`, board); if (s) s.classList.add('hit'); }
+        }
+        last = { ...stakes };
+        for (const k in stakes) delete stakes[k];
+        return { ret: Math.floor(ret), total: t };
+      }
+    };
+  }
+
+  /* ---------- Mines ---------- */
+  const mn = { live: false, bet: 0, n: 3, mines: new Set(), open: new Set() };
+  const mnGrid = $('#mines-grid'), mnSay = sayer($('#mines-msg')), mnGo = $('#mines-go');
+  const mnMult = (k, m) => { let x = 0.99; for (let i = 0; i < k; i++) x *= (25 - i) / (25 - m - i); return k ? x : 1; };
+  const mnTiles = Array.from({ length: 25 }, (_, i) => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'mtile';
+    b.disabled = true;
+    b.setAttribute('aria-label', `Tile ${i + 1}`);
+    b.addEventListener('click', () => mnPick(i));
+    mnGrid.append(b);
+    return b;
+  });
+  function mnStats() {
+    const m = mn.live ? mn.n : bets.minesN, k = mn.live ? mn.open.size : 0;
+    $('#mines-now').textContent = xfmt(mnMult(k, m));
+    $('#mines-next').textContent = k < 25 - m ? xfmt(mnMult(k + 1, m)) : '—';
+    $('#mines-pay').textContent = fmt(mn.live ? Math.floor(mn.bet * mnMult(k, m)) : 0);
+  }
+  function mnPick(i) {
+    if (!mn.live || mn.open.has(i)) return;
+    const t = mnTiles[i];
+    if (mn.mines.has(i)) { t.classList.add('boom'); t.textContent = '💣'; mnEnd(false); return; }
+    mn.open.add(i);
+    t.classList.add('gem');
+    t.textContent = '💎';
+    t.disabled = true;
+    const k = mn.open.size;
+    mnStats();
+    if (k === 25 - mn.n) { mnEnd(true); return; }
+    mnGo.disabled = false;
+    mnGo.textContent = `Cash out ${fmt(Math.floor(mn.bet * mnMult(k, mn.n)))}`;
+    mnSay(`${k} gem${k > 1 ? 's' : ''} found. Next gem pays ${xfmt(mnMult(k + 1, mn.n))}.`, '');
+  }
+  function mnEnd(won) {
+    const m = mnMult(mn.open.size, mn.n);
+    mn.live = false;
+    mnTiles.forEach((t, i) => {
+      t.disabled = true;
+      if (mn.open.has(i) || t.classList.contains('boom')) return;
+      t.textContent = mn.mines.has(i) ? '💣' : '💎';
+      t.classList.add('ghost');
+    });
+    if (won) settleBet(mnSay, mn.bet * m, mn.bet, mn.open.size === 25 - mn.n ? `Every gem found at ${xfmt(m)}!` : `Cashed out at ${xfmt(m)}.`);
+    else mnSay(`Boom. You lose ${fmt(mn.bet)}.`, 'lose');
+    mnGo.disabled = false;
+    mnGo.textContent = 'Start';
+    lockBet('mines', false);
+    lockBet('minesN', false);
+    mnStats();
+  }
+  mnGo.addEventListener('click', () => {
+    if (mn.live) { if (mn.open.size) mnEnd(true); return; }
+    const bet = bets.mines;
+    if (!afford(bet, mnSay)) return;
+    setBalance(balance - bet);
+    Object.assign(mn, { live: true, bet, n: bets.minesN, open: new Set(), mines: new Set() });
+    while (mn.mines.size < mn.n) mn.mines.add(rand(25));
+    mnTiles.forEach(t => { t.className = 'mtile'; t.textContent = ''; t.disabled = false; });
+    lockBet('mines', true);
+    lockBet('minesN', true);
+    mnGo.textContent = 'Cash out';
+    mnGo.disabled = true;
+    mnSay(`${mn.n} mine${mn.n > 1 ? 's' : ''} hidden. Tap a tile.`, '');
+    mnStats();
+  });
+  $('.bet[data-game="minesN"]').addEventListener('betchange', mnStats);
+  $('.bet[data-game="mines"]').addEventListener('betchange', mnStats);
+  mnStats();
+
+  /* ---------- Tower ---------- */
+  const TW_ROWS = 8;
+  const tw = { live: false, bet: 0, w: 3, level: 0, traps: [] };
+  const twGrid = $('#tower-grid'), twSay = sayer($('#tower-msg')), twGo = $('#tower-go');
+  const twMult = (k, w) => k ? 0.98 * Math.pow(w / (w - 1), k) : 1;
+  const twInit = [2, 3, 4].includes(store.get('vr.towerW', 3)) ? store.get('vr.towerW', 3) : 3;
+  const twDiff = segment($('#tower-diff'), String(twInit), v => { store.set('vr.towerW', Number(v)); twBuild(); twActivate(); });
+  function twBuild() {
+    const w = tw.live ? tw.w : Number(twDiff.value);
+    twGrid.style.setProperty('--w', w);
+    twGrid.replaceChildren();
+    for (let r = TW_ROWS - 1; r >= 0; r--) {
+      const row = document.createElement('div');
+      row.className = 'trow';
+      row.dataset.r = r;
+      row.innerHTML = `<span class="tm">${xfmt(twMult(r + 1, w))}</span>` +
+        Array.from({ length: w }, (_, c) => `<button type="button" class="ttile" data-c="${c}" aria-label="Floor ${r + 1}, tile ${c + 1}" disabled></button>`).join('');
+      twGrid.append(row);
+    }
+  }
+  function twActivate() {
+    $$('.trow', twGrid).forEach(row => {
+      const r = Number(row.dataset.r);
+      row.classList.toggle('active', tw.live && r === tw.level);
+      row.classList.toggle('done', r < tw.level);
+      $$('.ttile', row).forEach(b => { b.disabled = !(tw.live && r === tw.level); });
+    });
+  }
+  function twEnd(won) {
+    tw.live = false;
+    $$('.trow', twGrid).forEach(row => {
+      const t = $(`.ttile[data-c="${tw.traps[Number(row.dataset.r)]}"]`, row);
+      if (t && !t.classList.contains('trap')) { t.textContent = '💀'; t.classList.add('ghost'); }
+    });
+    twActivate();
+    if (won) {
+      const m = twMult(tw.level, tw.w);
+      settleBet(twSay, tw.bet * m, tw.bet, tw.level === TW_ROWS ? `Top of the tower at ${xfmt(m)}!` : `Cashed out at ${xfmt(m)}.`);
+    } else {
+      twSay(`Trap on floor ${tw.level + 1}. You lose ${fmt(tw.bet)}.`, 'lose');
+    }
+    twGo.textContent = 'Start';
+    twGo.disabled = false;
+    twDiff.lock(false);
+    lockBet('tower', false);
+  }
+  twGrid.addEventListener('click', e => {
+    const b = e.target.closest('.ttile');
+    if (!b || !tw.live) return;
+    const r = Number(b.closest('.trow').dataset.r), c = Number(b.dataset.c);
+    if (r !== tw.level) return;
+    if (tw.traps[r] === c) { b.classList.add('trap'); b.textContent = '💀'; twEnd(false); return; }
+    b.classList.add('safe');
+    b.textContent = '💎';
+    tw.level++;
+    if (tw.level === TW_ROWS) { twEnd(true); return; }
+    twActivate();
+    twGo.disabled = false;
+    twGo.textContent = `Cash out ${fmt(Math.floor(tw.bet * twMult(tw.level, tw.w)))}`;
+    twSay(`Floor ${tw.level} cleared. Climb on, or cash out.`, '');
+  });
+  twGo.addEventListener('click', () => {
+    if (tw.live) { if (tw.level) twEnd(true); return; }
+    const bet = bets.tower;
+    if (!afford(bet, twSay)) return;
+    setBalance(balance - bet);
+    Object.assign(tw, { live: true, bet, w: Number(twDiff.value), level: 0 });
+    tw.traps = Array.from({ length: TW_ROWS }, () => rand(tw.w));
+    twBuild();
+    twActivate();
+    twDiff.lock(true);
+    lockBet('tower', true);
+    twGo.textContent = 'Cash out';
+    twGo.disabled = true;
+    twSay('Pick a tile on the bottom floor.', '');
+  });
+  twBuild();
+  twActivate();
+
+  /* ---------- Plinko ---------- */
+  const PL_ROWS = 12, PL_SEG = 120;
+  const PL_TABLES = {
+    low: [10, 3, 1.6, 1.4, 1.1, 1, 0.5, 1, 1.1, 1.4, 1.6, 3, 10],
+    medium: [33, 11, 4, 2, 1.1, 0.6, 0.3, 0.6, 1.1, 2, 4, 11, 33],
+    high: [170, 24, 8.1, 2, 0.7, 0.2, 0.2, 0.2, 0.7, 2, 8.1, 24, 170]
+  };
+  const plCanvas = $('#pl-canvas'), plCtx = plCanvas.getContext('2d'), plSay = sayer($('#pl-msg'));
+  const pl = { balls: [], flash: {}, running: false };
+  const plRisk = segment($('#pl-risk'), PL_TABLES[store.get('vr.plRisk', 'medium')] ? store.get('vr.plRisk', 'medium') : 'medium',
+    v => { store.set('vr.plRisk', v); plDraw(performance.now()); });
+  function plGeo() {
+    const W = plCanvas.width, gap = W / (PL_ROWS + 2.2), top = gap * 1.1;
+    return { W, gap, top, rowH: (W - top - gap * 1.4) / PL_ROWS, cx: W / 2 };
+  }
+  function plBall(b, now, g) {
+    const el = (now - b.start) / PL_SEG - 1, s = Math.floor(el), t = el - s;
+    if (s >= PL_ROWS) return null;
+    const xAt = r => r < 0 ? g.cx : g.cx + (b.rights[r] - r / 2) * g.gap;
+    const yAt = r => r < 0 ? g.top - g.rowH * 1.5 : g.top + r * g.rowH;
+    const x = xAt(s) + (xAt(s + 1) - xAt(s)) * t;
+    const y = yAt(s) + (yAt(s + 1) - yAt(s)) * t - (s < 0 ? 0 : Math.sin(Math.PI * t) * g.rowH * 0.45);
+    return [x, y - g.gap * 0.3];
+  }
+  function plDraw(now) {
+    const w = plCanvas.clientWidth;
+    if (!w) return;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2), px = Math.round(w * dpr);
+    if (plCanvas.width !== px) { plCanvas.width = px; plCanvas.height = px; }
+    const g = plGeo(), c = plCtx, table = PL_TABLES[plRisk.value];
+    c.clearRect(0, 0, g.W, g.W);
+    c.fillStyle = css('--ivory');
+    for (let r = 0; r < PL_ROWS; r++) {
+      for (let j = 0; j < r + 3; j++) {
+        c.beginPath();
+        c.arc(g.cx + (j - (r + 2) / 2) * g.gap, g.top + r * g.rowH, g.gap * 0.09, 0, 2 * Math.PI);
+        c.fill();
+      }
+    }
+    const sy = g.top + PL_ROWS * g.rowH + g.gap * 0.1, sw = g.gap * 0.9, sh = g.gap * 0.72;
+    c.textAlign = 'center';
+    c.textBaseline = 'middle';
+    c.font = `800 ${g.gap * 0.34}px Manrope, -apple-system, sans-serif`;
+    table.forEach((m, k) => {
+      const x = g.cx + (k - 6) * g.gap, lift = (pl.flash[k] || 0) > now ? g.gap * 0.12 : 0;
+      c.fillStyle = css(m >= 10 ? '--red' : m >= 2 ? '--brass' : m >= 1 ? '--brass-dim' : '--velvet-3');
+      rr(c, x - sw / 2, sy + lift, sw, sh, g.gap * 0.15);
+      c.fill();
+      c.fillStyle = css(m >= 2 && m < 10 ? '--velvet' : '--ivory');
+      c.fillText(String(m), x, sy + lift + sh / 2);
+    });
+    c.fillStyle = css('--brass');
+    pl.balls.forEach(b => {
+      const p = plBall(b, now, g);
+      if (!p) return;
+      c.beginPath();
+      c.arc(p[0], p[1], g.gap * 0.22, 0, 2 * Math.PI);
+      c.fill();
+    });
+  }
+  function plLand(b) {
+    pl.balls.splice(pl.balls.indexOf(b), 1);
+    const k = b.rights[PL_ROWS], m = PL_TABLES[b.risk][k];
+    pl.flash[k] = performance.now() + 280;
+    settleBet(plSay, b.bet * m, b.bet, `Landed on ${m}×.`);
+    if (!pl.balls.length) { plRisk.lock(false); lockBet('plinko', false); }
+  }
+  function plLoop() {
+    const now = performance.now();
+    [...pl.balls].forEach(b => { if ((now - b.start) / PL_SEG - 1 >= PL_ROWS) plLand(b); });
+    plDraw(now);
+    if (pl.balls.length || Object.values(pl.flash).some(t => t > now)) requestAnimationFrame(plLoop);
+    else pl.running = false;
+  }
+  $('#pl-go').addEventListener('click', () => {
+    if (pl.balls.length >= 15) return;
+    const bet = bets.plinko;
+    if (!afford(bet, plSay)) return;
+    setBalance(balance - bet);
+    const rights = [0];
+    for (let r = 0; r < PL_ROWS; r++) rights.push(rights[r] + rand(2));
+    pl.balls.push({ start: performance.now(), rights, bet, risk: plRisk.value });
+    plRisk.lock(true);
+    if (!pl.running) { pl.running = true; requestAnimationFrame(plLoop); }
+  });
+
+  /* ---------- Dice ---------- */
+  const dzTarget = $('#dice-target'), dzSay = sayer($('#dice-msg')), dzGo = $('#dice-go'), dzHist = [];
+  const dzMode = segment($('#dice-mode'), store.get('vr.diceMode', 'under') === 'over' ? 'over' : 'under',
+    v => { store.set('vr.diceMode', v); dzUpdate(); });
+  const dzSaved = Number(store.get('vr.diceT', 50));
+  dzTarget.value = dzSaved >= 2 && dzSaved <= 98 ? dzSaved : 50;
+  const dzChance = () => dzMode.value === 'under' ? Number(dzTarget.value) : 100 - Number(dzTarget.value);
+  function dzUpdate() {
+    const t = Number(dzTarget.value), ch = dzChance(), m = 99 / ch;
+    $('#dice-tv').textContent = (dzMode.value === 'under' ? 'under ' : 'over ') + t;
+    $('#dice-chance').textContent = ch + '%';
+    $('#dice-mult').textContent = xfmt(m);
+    $('#dice-win').textContent = fmt(Math.floor(bets.dice * m));
+    $('#dice-track').style.background = dzMode.value === 'under'
+      ? `linear-gradient(90deg, var(--win) 0 ${t}%, var(--lose) ${t}% 100%)`
+      : `linear-gradient(90deg, var(--lose) 0 ${t}%, var(--win) ${t}% 100%)`;
+    store.set('vr.diceT', t);
+  }
+  dzTarget.addEventListener('input', dzUpdate);
+  $('.bet[data-game="dice"]').addEventListener('betchange', dzUpdate);
+  dzGo.addEventListener('click', async () => {
+    const bet = bets.dice;
+    if (!afford(bet, dzSay)) return;
+    setBalance(balance - bet);
+    dzGo.disabled = true;
+    dzTarget.disabled = true;
+    dzMode.lock(true);
+    lockBet('dice', true);
+    const roll = Math.floor(rnd() * 10000) / 100, t = Number(dzTarget.value), ch = dzChance();
+    const win = dzMode.value === 'under' ? roll < t : roll >= t;
+    $('#dice-mark').style.left = roll + '%';
+    $('#dice-tag').textContent = roll.toFixed(2);
+    await sleep(reduce ? 0 : 520);
+    const num = $('#dice-num');
+    num.textContent = roll.toFixed(2);
+    num.className = 'bignum ' + (win ? 'win' : 'lose');
+    settleBet(dzSay, win ? bet * 99 / ch : 0, bet, `Rolled ${roll.toFixed(2)}.`);
+    dzHist.unshift({ roll, win });
+    dzHist.length = Math.min(dzHist.length, 8);
+    pills($('#dice-hist'), 'Last rolls', dzHist.map(h => `<i class="${h.win ? 'win' : 'lo'}">${h.roll.toFixed(2)}</i>`));
+    dzGo.disabled = false;
+    dzTarget.disabled = false;
+    dzMode.lock(false);
+    lockBet('dice', false);
+  });
+  dzUpdate();
+
+  /* ---------- Limbo ---------- */
+  const lbSay = sayer($('#limbo-msg')), lbGo = $('#limbo-go'), lbNum = $('#limbo-num'), lbHist = [];
+  function lbUpdate() {
+    const t = bets.limboT;
+    $('#limbo-t').textContent = xfmt(t);
+    $('#limbo-chance').textContent = +(99 / t).toFixed(2) + '%';
+    $('#limbo-win').textContent = fmt(Math.floor(bets.limbo * t));
+  }
+  $('.bet[data-game="limbo"]').addEventListener('betchange', lbUpdate);
+  $('.bet[data-game="limboT"]').addEventListener('betchange', lbUpdate);
+  lbGo.addEventListener('click', async () => {
+    const bet = bets.limbo, target = bets.limboT;
+    if (!afford(bet, lbSay)) return;
+    setBalance(balance - bet);
+    lbGo.disabled = true;
+    lockBet('limbo', true);
+    lockBet('limboT', true);
+    const result = Math.min(1e6, Math.max(1, Math.floor(99 / (1 - rnd())) / 100));
+    const win = result >= target;
+    lbNum.className = 'bignum';
+    const t0 = performance.now(), dur = reduce ? 0 : 650;
+    await new Promise(done => {
+      const step = now => {
+        const p = dur ? Math.min(1, (now - t0) / dur) : 1;
+        lbNum.textContent = xfmt(1 + (result - 1) * (1 - Math.pow(1 - p, 3)));
+        if (p < 1) requestAnimationFrame(step); else done();
+      };
+      requestAnimationFrame(step);
+    });
+    lbNum.textContent = xfmt(result);
+    lbNum.className = 'bignum ' + (win ? 'win' : 'lose');
+    settleBet(lbSay, win ? bet * target : 0, bet, `Result ${xfmt(result)}, target ${xfmt(target)}.`);
+    lbHist.unshift({ result, win });
+    lbHist.length = Math.min(lbHist.length, 8);
+    pills($('#limbo-hist'), 'Last results', lbHist.map(h => `<i class="${h.win ? 'win' : 'lo'}">${xfmt(h.result)}</i>`));
+    lbGo.disabled = false;
+    lockBet('limbo', false);
+    lockBet('limboT', false);
+  });
+  lbUpdate();
+
+  /* ---------- Coin flip ---------- */
+  const cf = { pot: 0, stake: 0, streak: 0, rot: 0 };
+  const coin = $('#coin'), cfSay = sayer($('#coin-msg'));
+  const cfPick = segment($('#coin-pick'), 'H');
+  function cfStats() {
+    $('#coin-streak').textContent = cf.streak;
+    $('#coin-pot').textContent = fmt(cf.pot);
+    $('#coin-next').textContent = fmt(Math.floor((cf.pot || bets.coinflip) * 1.96));
+  }
+  function cfButtons(busy) {
+    $('#coin-start').hidden = !!cf.pot;
+    $('#coin-after').hidden = !cf.pot;
+    $('#coin-go').disabled = busy;
+    $('#coin-again').disabled = busy;
+    $('#coin-collect').disabled = busy;
+    cfPick.lock(busy);
+    lockBet('coinflip', busy || !!cf.pot);
+  }
+  async function cfFlip() {
+    cfButtons(true);
+    const side = rand(2) ? 'H' : 'T', name = side === 'H' ? 'Heads' : 'Tails';
+    cf.rot = cf.rot - (cf.rot % 360) + 360 * 5 + (side === 'T' ? 180 : 0);
+    coin.style.transition = reduce ? 'none' : '';
+    coin.style.transform = `rotateY(${cf.rot}deg)`;
+    await sleep(reduce ? 0 : 1150);
+    if (side === cfPick.value) {
+      cf.pot = Math.floor(cf.pot * 1.96);
+      cf.streak++;
+      cfSay(`${name}! The pot is ${fmt(cf.pot)}. Collect it, or flip again.`, 'win');
+    } else {
+      const lost = cf.pot;
+      cf.pot = 0;
+      cf.streak = 0;
+      cfSay(`${name}. The ${fmt(lost)} pot is gone.`, 'lose');
+    }
+    cfButtons(false);
+    cfStats();
+  }
+  $('#coin-go').addEventListener('click', () => {
+    const bet = bets.coinflip;
+    if (!afford(bet, cfSay)) return;
+    setBalance(balance - bet);
+    cf.pot = bet;
+    cf.stake = bet;
+    cfFlip();
+  });
+  $('#coin-again').addEventListener('click', () => { if (cf.pot) cfFlip(); });
+  $('#coin-collect').addEventListener('click', () => {
+    if (!cf.pot) return;
+    const pot = cf.pot, n = cf.streak;
+    cf.pot = 0;
+    cf.streak = 0;
+    settleBet(cfSay, pot, cf.stake, `Collected ${fmt(pot)} after ${n} win${n > 1 ? 's' : ''}.`);
+    cfButtons(false);
+    cfStats();
+  });
+  $('.bet[data-game="coinflip"]').addEventListener('betchange', cfStats);
+  cfStats();
+
+  /* ---------- Keno ---------- */
+  const KENO_PAYS = {
+    1: { 1: 3.8 }, 2: { 1: 1.7, 2: 5.2 }, 3: { 2: 3.4, 3: 40 }, 4: { 2: 2.3, 3: 6.9, 4: 82 },
+    5: { 2: 1.5, 3: 3.6, 4: 14, 5: 250 }, 6: { 2: 1.1, 3: 2.2, 4: 6.6, 5: 66, 6: 550 },
+    7: { 3: 2.8, 4: 5.7, 5: 21, 6: 170, 7: 1000 }, 8: { 3: 2, 4: 3.9, 5: 10, 6: 52, 7: 330, 8: 1200 },
+    9: { 3: 1.5, 4: 2.6, 5: 6.5, 6: 25, 7: 130, 8: 650, 9: 1300 },
+    10: { 3: 1.2, 4: 2, 5: 4.4, 6: 12, 7: 50, 8: 250, 9: 900, 10: 1250 }
+  };
+  const knGrid = $('#keno-grid'), knSay = sayer($('#keno-msg')), knGo = $('#keno-go');
+  const kn = { picks: new Set((store.get('vr.keno', []) || []).filter(n => Number.isInteger(n) && n >= 1 && n <= 40).slice(0, 10)), busy: false };
+  for (let n = 1; n <= 40; n++) {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'kn';
+    b.dataset.n = n;
+    b.textContent = n;
+    knGrid.append(b);
+  }
+  function knRender(hits) {
+    $$('.kn', knGrid).forEach(b => {
+      const picked = kn.picks.has(Number(b.dataset.n));
+      b.classList.toggle('picked', picked);
+      b.setAttribute('aria-pressed', String(picked));
+    });
+    const table = KENO_PAYS[kn.picks.size];
+    $('#keno-pay').innerHTML = table
+      ? Object.entries(table).map(([h, m]) => `<span class="${Number(h) === hits ? 'hit' : ''}">${h} hit${h > 1 ? 's' : ''} → ${m}×</span>`).join('')
+      : '<span>Pick at least one number</span>';
+    knGo.disabled = kn.busy || !kn.picks.size;
+    store.set('vr.keno', [...kn.picks]);
+  }
+  const knUnmark = () => $$('.kn', knGrid).forEach(b => b.classList.remove('drawn', 'hit'));
+  knGrid.addEventListener('click', e => {
+    const b = e.target.closest('.kn');
+    if (!b || kn.busy) return;
+    const n = Number(b.dataset.n);
+    knUnmark();
+    if (kn.picks.has(n)) kn.picks.delete(n);
+    else if (kn.picks.size >= 10) { knSay('You can pick up to 10 numbers.', 'lose'); return; }
+    else kn.picks.add(n);
+    knSay(`${kn.picks.size} picked.`, '');
+    knRender();
+  });
+  $('#keno-quick').addEventListener('click', () => {
+    if (kn.busy) return;
+    const count = kn.picks.size || 6;
+    kn.picks.clear();
+    while (kn.picks.size < count) kn.picks.add(rand(40) + 1);
+    knUnmark();
+    knSay(`Quick pick: ${count} numbers.`, '');
+    knRender();
+  });
+  $('#keno-clear').addEventListener('click', () => {
+    if (kn.busy) return;
+    kn.picks.clear();
+    knUnmark();
+    knSay('Picks cleared.', '');
+    knRender();
+  });
+  knGo.addEventListener('click', async () => {
+    if (kn.busy || !kn.picks.size) return;
+    const bet = bets.keno;
+    if (!afford(bet, knSay)) return;
+    setBalance(balance - bet);
+    kn.busy = true;
+    knRender();
+    lockBet('keno', true);
+    knUnmark();
+    knSay('Drawing…', '');
+    const drawn = new Set();
+    let hits = 0;
+    while (drawn.size < 10) {
+      const n = rand(40) + 1;
+      if (drawn.has(n)) continue;
+      drawn.add(n);
+      const b = $(`.kn[data-n="${n}"]`, knGrid);
+      if (kn.picks.has(n)) { hits++; b.classList.add('hit'); } else b.classList.add('drawn');
+      await sleep(reduce ? 0 : 140);
+    }
+    const m = (KENO_PAYS[kn.picks.size] || {})[hits] || 0;
+    kn.busy = false;
+    knRender(hits);
+    lockBet('keno', false);
+    settleBet(knSay, bet * m, bet, `${hits} of ${kn.picks.size} matched${m ? ` for ${m}×` : ''}.`);
+  });
+  knRender();
+
+  /* ---------- Lucky Scratch ---------- */
+  const SC_PRIZES = [1, 2, 5, 10, 20, 100], SC_P = [0.12, 0.1, 0.04, 0.015, 0.006, 0.001];
+  const sc = { live: false, bet: 0, win: 0, cells: [5, 1, 20, 2, 100, 1, 10, 2, 5], last: null, drawing: false };
+  const scFoil = $('#sc-foil'), scCtx = scFoil.getContext('2d'), scGrid = $('#sc-grid'), scSay = sayer($('#sc-msg'));
+  function scDeal() {
+    const u = rnd();
+    let acc = 0, win = 0;
+    for (let i = 0; i < SC_PRIZES.length; i++) { acc += SC_P[i]; if (u < acc) { win = SC_PRIZES[i]; break; } }
+    const cells = win ? [win, win, win] : [];
+    const pool = shuffle(SC_PRIZES.filter(p => p !== win).flatMap(p => [p, p]));
+    while (cells.length < 9) cells.push(pool.pop());
+    return { win, cells: shuffle(cells) };
+  }
+  function scCells(bet) {
+    scGrid.innerHTML = sc.cells.map(m => `<div class="scell" data-m="${m}"><b>${short(bet * m)}</b><small>×${m}</small></div>`).join('');
+  }
+  function scPaint() {
+    const r = scFoil.getBoundingClientRect();
+    if (!r.width) return;
+    const d = Math.min(window.devicePixelRatio || 1, 2), W = Math.round(r.width * d), H = Math.round(r.height * d), c = scCtx;
+    scFoil.width = W;
+    scFoil.height = H;
+    c.globalCompositeOperation = 'source-over';
+    const grad = c.createLinearGradient(0, 0, W, H);
+    grad.addColorStop(0, css('--ivory-shade'));
+    grad.addColorStop(0.5, css('--muted'));
+    grad.addColorStop(1, css('--ivory-shade'));
+    c.fillStyle = grad;
+    c.fillRect(0, 0, W, H);
+    c.strokeStyle = css('--ivory');
+    c.globalAlpha = 0.25;
+    c.lineWidth = 2 * d;
+    for (let x = -H; x < W; x += 14 * d) { c.beginPath(); c.moveTo(x, 0); c.lineTo(x + H, H); c.stroke(); }
+    c.globalAlpha = 1;
+    c.fillStyle = css('--velvet');
+    c.font = `400 ${24 * d}px Limelight, Georgia, serif`;
+    c.textAlign = 'center';
+    c.textBaseline = 'middle';
+    c.fillText(sc.live ? 'Scratch here' : 'Buy a ticket', W / 2, H / 2);
+    scFoil.classList.remove('gone');
+  }
+  function scScratch(e) {
+    const r = scFoil.getBoundingClientRect(), d = scFoil.width / r.width;
+    const x = (e.clientX - r.left) * d, y = (e.clientY - r.top) * d, c = scCtx;
+    c.globalCompositeOperation = 'destination-out';
+    c.beginPath();
+    c.arc(x, y, 22 * d, 0, 2 * Math.PI);
+    c.fill();
+    if (sc.last) {
+      c.lineWidth = 44 * d;
+      c.lineCap = 'round';
+      c.beginPath();
+      c.moveTo(sc.last[0], sc.last[1]);
+      c.lineTo(x, y);
+      c.stroke();
+    }
+    sc.last = [x, y];
+  }
+  function scCleared() {
+    const { width: W, height: H } = scFoil, data = scCtx.getImageData(0, 0, W, H).data;
+    let clear = 0, total = 0;
+    for (let i = 3; i < data.length; i += 64) { total++; if (data[i] === 0) clear++; }
+    return clear / total;
+  }
+  function scFinish() {
+    if (!sc.live) return;
+    sc.live = false;
+    scFoil.classList.add('gone');
+    if (sc.win) $$(`.scell[data-m="${sc.win}"]`, scGrid).forEach(c => c.classList.add('match'));
+    settleBet(scSay, sc.bet * sc.win, sc.bet, sc.win ? `Three ×${sc.win}!` : 'No three of a kind.');
+    $('#sc-go').disabled = false;
+    $('#sc-reveal').disabled = true;
+    lockBet('scratch', false);
+  }
+  scFoil.addEventListener('pointerdown', e => {
+    if (!sc.live) return;
+    sc.drawing = true;
+    sc.last = null;
+    try { scFoil.setPointerCapture(e.pointerId); } catch {}
+    scScratch(e);
+  });
+  scFoil.addEventListener('pointermove', e => { if (sc.drawing && sc.live) scScratch(e); });
+  const scUp = () => {
+    if (!sc.drawing) return;
+    sc.drawing = false;
+    sc.last = null;
+    if (sc.live && scCleared() > 0.55) scFinish();
+  };
+  scFoil.addEventListener('pointerup', scUp);
+  scFoil.addEventListener('pointercancel', scUp);
+  $('#sc-reveal').addEventListener('click', scFinish);
+  $('#sc-go').addEventListener('click', () => {
+    if (sc.live) return;
+    const bet = bets.scratch;
+    if (!afford(bet, scSay)) return;
+    setBalance(balance - bet);
+    const deal = scDeal();
+    Object.assign(sc, { live: true, bet, win: deal.win, cells: deal.cells });
+    scPaint();
+    scCells(bet);
+    $('#sc-go').disabled = true;
+    $('#sc-reveal').disabled = false;
+    lockBet('scratch', true);
+    scSay('Scratch the foil with your finger.', '');
+  });
+  scCells(bets.scratch);
+
+  /* ---------- Hi-Lo ---------- */
+  const hl = { live: false, bet: 0, mult: 1, count: 0, card: randCard() };
+  const hlSay = sayer($('#hl-msg'));
+  const lowRank = c => c.r === 'A' ? 1 : c.r === 'J' ? 11 : c.r === 'Q' ? 12 : c.r === 'K' ? 13 : Number(c.r);
+  function hlOptions(r) {
+    if (r === 1) return { hi: ['Higher', 12 / 13, n => n > r], lo: ['Same', 1 / 13, n => n === r] };
+    if (r === 13) return { hi: ['Same', 1 / 13, n => n === r], lo: ['Lower', 12 / 13, n => n < r] };
+    return { hi: ['Higher or same', (14 - r) / 13, n => n >= r], lo: ['Lower or same', r / 13, n => n <= r] };
+  }
+  function hlRender(animate) {
+    const el = bigCard(hl.card);
+    if (!animate) el.style.animation = 'none';
+    $('#hl-card').replaceChildren(el);
+    const o = hlOptions(lowRank(hl.card));
+    $('#hl-hi').textContent = `${o.hi[0]} ${xfmt(0.99 / o.hi[1])}`;
+    $('#hl-lo').textContent = `${o.lo[0]} ${xfmt(0.99 / o.lo[1])}`;
+    $('#hl-hi').disabled = $('#hl-lo').disabled = !hl.live;
+    $('#hl-mult').textContent = xfmt(hl.mult);
+    $('#hl-pay').textContent = fmt(hl.live ? Math.floor(hl.bet * hl.mult) : 0);
+    $('#hl-count').textContent = hl.count;
+    const go = $('#hl-go');
+    go.textContent = hl.live ? (hl.count ? `Cash out ${fmt(Math.floor(hl.bet * hl.mult))}` : 'Cash out') : 'Start';
+    go.disabled = hl.live && !hl.count;
+  }
+  function hlStrip(c) {
+    const strip = $('#hl-strip');
+    strip.append(cardEl(c, false));
+    while (strip.children.length > 12) strip.firstElementChild.remove();
+  }
+  function hlGuess(which) {
+    if (!hl.live) return;
+    const o = hlOptions(lowRank(hl.card))[which], next = randCard();
+    hlStrip(hl.card);
+    hl.card = next;
+    if (o[2](lowRank(next))) {
+      hl.mult *= 0.99 / o[1];
+      hl.count++;
+      hlSay(`${cardName(next)}. Right call.`, 'win');
+    } else {
+      hl.live = false;
+      hlSay(`${cardName(next)}. Wrong call. You lose ${fmt(hl.bet)}.`, 'lose');
+      lockBet('hilo', false);
+    }
+    hlRender(true);
+  }
+  $('#hl-hi').addEventListener('click', () => hlGuess('hi'));
+  $('#hl-lo').addEventListener('click', () => hlGuess('lo'));
+  $('#hl-skip').addEventListener('click', () => {
+    hlStrip(hl.card);
+    hl.card = randCard();
+    hlRender(true);
+  });
+  $('#hl-go').addEventListener('click', () => {
+    if (hl.live) {
+      if (!hl.count) return;
+      hl.live = false;
+      settleBet(hlSay, hl.bet * hl.mult, hl.bet, `Cashed out at ${xfmt(hl.mult)}.`);
+      lockBet('hilo', false);
+      hlRender(false);
+      return;
+    }
+    const bet = bets.hilo;
+    if (!afford(bet, hlSay)) return;
+    setBalance(balance - bet);
+    Object.assign(hl, { live: true, bet, mult: 1, count: 0 });
+    $('#hl-strip').replaceChildren();
+    lockBet('hilo', true);
+    hlSay('Higher or lower?', '');
+    hlRender(false);
+  });
+  hlRender(false);
+
+  /* ---------- Red Dog ---------- */
+  let rdShoe = [];
+  const rdDraw = () => { if (rdShoe.length < 30) rdShoe = makeShoe(6); return rdShoe.pop(); };
+  const rd = { bet: 0, stake: 0, a: null, b: null };
+  const rdSay = sayer($('#rd-msg'));
+  const rdPay = s => s === 1 ? 5 : s === 2 ? 4 : s === 3 ? 2 : 1;
+  const rdShow = cards => $('#rd-cards').replaceChildren(...cards.map(c => c ? bigCard(c) : hole()));
+  function rdRows(deciding) {
+    $('#rd-deal-row').hidden = deciding;
+    $('#rd-play-row').hidden = !deciding;
+    $('#rd-raise').disabled = !deciding || balance < rd.bet;
+  }
+  function rdDone(ret, head) {
+    settleBet(rdSay, ret, rd.stake, head);
+    $('#rd-spread').textContent = 'Spread pays';
+    rdRows(false);
+    $('#rd-deal').disabled = false;
+    lockBet('reddog', false);
+  }
+  $('#rd-deal').addEventListener('click', async () => {
+    const bet = bets.reddog;
+    if (!afford(bet, rdSay)) return;
+    setBalance(balance - bet);
+    rd.bet = rd.stake = bet;
+    $('#rd-deal').disabled = true;
+    lockBet('reddog', true);
+    let a = rdDraw(), b = rdDraw();
+    if (hiRank(a) > hiRank(b)) [a, b] = [b, a];
+    rd.a = a; rd.b = b;
+    rdShow([a, null, b]);
+    rdSay('Dealing…', '');
+    await sleep(reduce ? 0 : 450);
+    const lo = hiRank(a), hi = hiRank(b);
+    if (lo === hi) {
+      const c = rdDraw();
+      rdShow([a, c, b]);
+      await sleep(reduce ? 0 : 350);
+      if (hiRank(c) === lo) rdDone(bet * 12, 'Three of a kind pays 11 to 1!');
+      else rdDone(bet, 'A pair, and no third match.');
+      return;
+    }
+    if (hi - lo === 1) { rdDone(bet, 'Consecutive cards.'); return; }
+    const s = hi - lo - 1;
+    $('#rd-spread').textContent = `Spread of ${s} pays ${rdPay(s)} to 1`;
+    rdSay(`Raise to double your bet, or call.`, '');
+    rdRows(true);
+  });
+  async function rdResolve() {
+    rdRows(false);
+    $('#rd-deal').disabled = true;
+    const c = rdDraw();
+    rdShow([rd.a, c, rd.b]);
+    await sleep(reduce ? 0 : 350);
+    const v = hiRank(c), s = hiRank(rd.b) - hiRank(rd.a) - 1;
+    if (v > hiRank(rd.a) && v < hiRank(rd.b)) rdDone(rd.stake * (1 + rdPay(s)), `${cardName(c)} lands inside.`);
+    else rdDone(0, `${cardName(c)} lands outside.`);
+  }
+  $('#rd-raise').addEventListener('click', () => {
+    if (balance < rd.bet) return;
+    setBalance(balance - rd.bet);
+    rd.stake += rd.bet;
+    rdResolve();
+  });
+  $('#rd-call').addEventListener('click', rdResolve);
+  rdShow([null, null, null]);
+
+  /* ---------- Casino War ---------- */
+  let wrShoe = [];
+  const wrDraw = () => { if (wrShoe.length < 30) wrShoe = makeShoe(6); return wrShoe.pop(); };
+  const wr = { bet: 0 };
+  const wrSay = sayer($('#war-msg'));
+  function wrDeal() {
+    const p = wrDraw(), d = wrDraw();
+    $('#war-p').replaceChildren(bigCard(p));
+    $('#war-d').replaceChildren(bigCard(d));
+    return [hiRank(p), hiRank(d), p, d];
+  }
+  function wrReset() {
+    $('#war-deal-row').hidden = false;
+    $('#war-tie-row').hidden = true;
+    $('#war-deal').disabled = false;
+    lockBet('war', false);
+  }
+  $('#war-deal').addEventListener('click', () => {
+    const bet = bets.war;
+    if (!afford(bet, wrSay)) return;
+    setBalance(balance - bet);
+    wr.bet = bet;
+    lockBet('war', true);
+    const [p, d, pc, dc] = wrDeal();
+    if (p > d) { settleBet(wrSay, bet * 2, bet, `Your ${pc.r} beats the dealer's ${dc.r}.`); wrReset(); return; }
+    if (p < d) { settleBet(wrSay, 0, bet, `The dealer's ${dc.r} beats your ${pc.r}.`); wrReset(); return; }
+    $('#war-deal-row').hidden = true;
+    $('#war-tie-row').hidden = false;
+    $('#war-go').disabled = balance < bet;
+    wrSay(`A tie on ${pc.r}s. Going to war costs another ${fmt(bet)}.`, '');
+  });
+  $('#war-surrender').addEventListener('click', () => {
+    settleBet(wrSay, wr.bet / 2, wr.bet, 'You surrender half.');
+    wrReset();
+  });
+  $('#war-go').addEventListener('click', async () => {
+    if (balance < wr.bet) return;
+    setBalance(balance - wr.bet);
+    $('#war-go').disabled = $('#war-surrender').disabled = true;
+    wrSay('Three cards burned. Dealing for war…', '');
+    await sleep(reduce ? 0 : 600);
+    const [p, d, pc, dc] = wrDeal();
+    $('#war-surrender').disabled = false;
+    if (p >= d) settleBet(wrSay, wr.bet * 3, wr.bet * 2, `You win the war, ${pc.r} against ${dc.r}.`);
+    else settleBet(wrSay, 0, wr.bet * 2, `The dealer wins the war, ${dc.r} against ${pc.r}.`);
+    wrReset();
+  });
+
+  /* ---------- Money Wheel ---------- */
+  const MW_TYPES = {
+    1: { pay: 1, color: '--velvet-3', label: '1' }, 2: { pay: 2, color: '--blue', label: '2' },
+    5: { pay: 5, color: '--green', label: '5' }, 10: { pay: 10, color: '--red', label: '10' },
+    20: { pay: 20, color: '--brass-dim', label: '20' }, J: { pay: 40, color: '--brass', label: '★' },
+    L: { pay: 40, color: '--black', label: 'VR' }
+  };
+  const MW = new Array(54).fill(null);
+  [['J', 1, 0], ['L', 1, 27], ['20', 2, 13], ['10', 4, 6], ['5', 7, 3], ['2', 15, 1]].forEach(([k, n, off]) => {
+    for (let i = 0; i < n; i++) {
+      let pos = Math.round(off + i * 54 / n) % 54;
+      while (MW[pos]) pos = (pos + 1) % 54;
+      MW[pos] = k;
+    }
+  });
+  MW.forEach((v, i) => { if (!v) MW[i] = '1'; });
+  const mwCanvas = $('#mw-canvas'), mwCtx = mwCanvas.getContext('2d'), mwSay = sayer($('#mw-msg')), mwResult = $('#mw-result');
+  let mwRot = 0;
+  function mwDraw() {
+    const S = mwCanvas.width, c = S / 2, R = c - 2, seg = 2 * Math.PI / 54, inner = R - 18, ctx = mwCtx;
+    ctx.clearRect(0, 0, S, S);
+    ctx.beginPath(); ctx.arc(c, c, R, 0, 2 * Math.PI); ctx.fillStyle = css('--velvet-3'); ctx.fill();
+    MW.forEach((k, i) => {
+      const a0 = -Math.PI / 2 + i * seg, t = MW_TYPES[k];
+      ctx.beginPath(); ctx.moveTo(c, c); ctx.arc(c, c, inner, a0, a0 + seg); ctx.closePath();
+      ctx.fillStyle = css(t.color); ctx.fill();
+      ctx.strokeStyle = css('--brass-dim'); ctx.lineWidth = 2; ctx.stroke();
+      ctx.save();
+      ctx.translate(c, c); ctx.rotate(a0 + seg / 2 + Math.PI / 2);
+      ctx.fillStyle = css(k === 'J' ? '--velvet' : '--ivory');
+      ctx.font = `800 ${Math.round(S * (t.label.length > 1 ? 0.03 : 0.036))}px Manrope, -apple-system, sans-serif`;
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText(t.label, 0, -inner * 0.88);
+      ctx.restore();
+    });
+    ctx.beginPath(); ctx.arc(c, c, inner * 0.74, 0, 2 * Math.PI); ctx.fillStyle = css('--velvet-2'); ctx.fill();
+    ctx.strokeStyle = css('--brass'); ctx.lineWidth = 4; ctx.stroke();
+  }
+  mwDraw();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(mwDraw);
+  const mwBoard = $('#mw-board');
+  mwBoard.innerHTML = [['1', '2', '5', '10'], ['20', 'J', 'L']].map(row =>
+    `<div class="crow" style="--n:${row.length}">` + row.map(k => {
+      const t = MW_TYPES[k];
+      return `<button type="button" class="cspot" data-key="${k}" style="background:var(${t.color});${k === 'J' ? 'color:var(--velvet)' : ''}" aria-label="Bet on ${k === 'J' ? 'joker' : k === 'L' ? 'logo' : k}, pays ${t.pay} to 1"><span>${t.label}</span><small${k === 'J' ? ' style="color:var(--velvet)"' : ''}>${t.pay} to 1</small></button>`;
+    }).join('') + '</div>').join('');
+  const mwChips = chipBoard({ board: mwBoard, chipKey: 'wheel', totalEl: $('#mw-total'), say: mwSay, go: $('#mw-spin'), clear: $('#mw-clear'), repeat: $('#mw-repeat') });
+  $('#mw-spin').addEventListener('click', async () => {
+    if (!mwChips.total()) return;
+    mwChips.lock(true);
+    $('#mw-wrap').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
+    mwSay('The wheel is spinning…', '');
+    mwResult.textContent = '';
+    mwResult.className = 'result';
+    const i = rand(54), k = MW[i], seg = 360 / 54;
+    mwRot = mwRot - (mwRot % 360) + 360 * 4 + (360 - (i * seg + seg / 2));
+    const dur = reduce ? 0 : 4200;
+    mwCanvas.style.transition = `transform ${dur}ms cubic-bezier(.1,.65,.08,1)`;
+    mwCanvas.style.transform = `rotate(${mwRot}deg)`;
+    await sleep(dur + 80);
+    const t = MW_TYPES[k];
+    mwResult.textContent = t.label;
+    mwResult.className = 'result pop';
+    mwResult.style.background = `var(${t.color})`;
+    mwResult.style.color = k === 'J' ? 'var(--velvet)' : '';
+    const { ret, total } = mwChips.settle((key, v) => key === k ? v * (1 + t.pay) : 0);
+    mwChips.lock(false);
+    settleBet(mwSay, ret, total, `${k === 'J' ? 'Joker' : k === 'L' ? 'Logo' : k} pays ${t.pay} to 1.`);
+  });
+
+  /* ---------- Craps ---------- */
+  const cp = { point: 0, line: 'pass', bet: 0, busy: false };
+  const cpSay = sayer($('#craps-msg')), cpGo = $('#craps-go');
+  const cpLine = segment($('#craps-line'), 'pass');
+  function cpRender() {
+    $$('#craps-puck span').forEach(s => s.classList.toggle('on', Number(s.textContent) === cp.point));
+    $('#craps-state').textContent = cp.point ? `The point is ${cp.point}` : 'Come-out roll';
+    cpGo.textContent = cp.point ? `Roll for ${cp.point}` : 'Roll';
+    cpGo.disabled = cp.busy;
+    cpLine.lock(!!cp.point || cp.busy);
+    lockBet('craps', !!cp.point || cp.busy);
+  }
+  cpGo.addEventListener('click', async () => {
+    if (cp.busy) return;
+    const comeOut = !cp.point;
+    if (comeOut) {
+      const bet = bets.craps;
+      if (!afford(bet, cpSay)) return;
+      setBalance(balance - bet);
+      cp.bet = bet;
+      cp.line = cpLine.value;
+    }
+    cp.busy = true;
+    cpRender();
+    const d = [rand(6) + 1, rand(6) + 1], t = d[0] + d[1], pass = cp.line === 'pass';
+    await rollDice($('#craps-dice'), d, 'red');
+    let result = null, label = '';
+    if (comeOut) {
+      if (t === 7 || t === 11) { result = pass ? 'win' : 'lose'; label = 'Natural.'; }
+      else if (t === 2 || t === 3) { result = pass ? 'lose' : 'win'; label = 'Craps.'; }
+      else if (t === 12) { result = pass ? 'lose' : 'push'; label = pass ? 'Craps.' : 'Craps, and 12 is barred.'; }
+      else {
+        cp.point = t;
+        cpSay(`Rolled ${t}. The point is ${t}. ${pass ? `Roll ${t} again before a 7.` : `You need a 7 before another ${t}.`}`, '');
+      }
+    } else if (t === cp.point) { result = pass ? 'win' : 'lose'; label = 'Point made.'; }
+    else if (t === 7) { result = pass ? 'lose' : 'win'; label = 'Seven out.'; }
+    else cpSay(`Rolled ${t}. Still rolling for ${cp.point}.`, '');
+    if (result) {
+      settleBet(cpSay, result === 'win' ? cp.bet * 2 : result === 'push' ? cp.bet : 0, cp.bet, `Rolled ${t}. ${label}`);
+      cp.point = 0;
+    }
+    cp.busy = false;
+    cpRender();
+  });
+  $('#craps-dice').replaceChildren(dieEl(3, 'red'), dieEl(4, 'red'));
+  cpRender();
+
+  /* ---------- Sic Bo ---------- */
+  const SB_TOTALS = { 4: 60, 5: 30, 6: 17, 7: 12, 8: 8, 9: 6, 10: 6, 11: 6, 12: 6, 13: 8, 14: 12, 15: 17, 16: 30, 17: 60 };
+  const sbBoard = $('#sb-board'), sbSay = sayer($('#sb-msg'));
+  const sbSpot = (key, main, sub, aria) => `<button type="button" class="cspot" data-key="${key}" aria-label="${aria}"><span>${main}</span><small>${sub}</small></button>`;
+  const sbTotal = n => sbSpot('t' + n, n, `${SB_TOTALS[n]}:1`, `Bet on a total of ${n}, pays ${SB_TOTALS[n]} to 1`);
+  sbBoard.innerHTML =
+    `<div class="crow" style="--n:3">${sbSpot('small', 'Small', '4–10 · 1:1', 'Bet small, 4 to 10, pays even money')}${sbSpot('triple', 'Any triple', '30:1', 'Bet any triple, pays 30 to 1')}${sbSpot('big', 'Big', '11–17 · 1:1', 'Bet big, 11 to 17, pays even money')}</div>` +
+    `<div class="crow" style="--n:2">${sbSpot('odd', 'Odd', '1:1', 'Bet odd total, pays even money')}${sbSpot('even', 'Even', '1:1', 'Bet even total, pays even money')}</div>` +
+    `<div class="section-label">Totals</div>` +
+    `<div class="crow" style="--n:7">${[4, 5, 6, 7, 8, 9, 10].map(sbTotal).join('')}</div>` +
+    `<div class="crow" style="--n:7">${[11, 12, 13, 14, 15, 16, 17].map(sbTotal).join('')}</div>` +
+    `<div class="section-label">Singles · 1:1 per matching die</div>` +
+    `<div class="crow" style="--n:6">${[1, 2, 3, 4, 5, 6].map(n => `<button type="button" class="cspot" data-key="s${n}" aria-label="Bet on single ${n}"></button>`).join('')}</div>`;
+  [1, 2, 3, 4, 5, 6].forEach(n => $(`[data-key="s${n}"]`, sbBoard).append(dieEl(n, 'mini')));
+  const sbChips = chipBoard({ board: sbBoard, chipKey: 'sicbo', totalEl: $('#sb-total'), say: sbSay, go: $('#sb-roll'), clear: $('#sb-clear'), repeat: $('#sb-repeat') });
+  $('#sb-roll').addEventListener('click', async () => {
+    if (!sbChips.total()) return;
+    sbChips.lock(true);
+    const d = [rand(6) + 1, rand(6) + 1, rand(6) + 1], t = d[0] + d[1] + d[2], triple = d[0] === d[1] && d[1] === d[2];
+    sbSay('Shaking the dice…', '');
+    await rollDice($('#sb-dice'), d);
+    $('#sb-sub').textContent = `Total ${t}${triple ? ' · triple' : ''}`;
+    const { ret, total } = sbChips.settle((k, v) => {
+      if (k === 'small') return !triple && t <= 10 ? v * 2 : 0;
+      if (k === 'big') return !triple && t >= 11 ? v * 2 : 0;
+      if (k === 'odd') return !triple && t % 2 ? v * 2 : 0;
+      if (k === 'even') return !triple && t % 2 === 0 ? v * 2 : 0;
+      if (k === 'triple') return triple ? v * 31 : 0;
+      if (k[0] === 't') return Number(k.slice(1)) === t ? v * (1 + SB_TOTALS[t]) : 0;
+      const hits = d.filter(x => x === Number(k.slice(1))).length;
+      return hits ? v * (1 + hits) : 0;
+    });
+    sbChips.lock(false);
+    settleBet(sbSay, ret, total, `${d.join(', ')} for ${t}.`);
+  });
+  $('#sb-dice').replaceChildren(dieEl(2), dieEl(5), dieEl(3));
+
+  /* ---------- Velvet Derby ---------- */
+  const HORSES = [
+    { name: 'Velvet Dancer', p: 0.30, silk: '--red' },
+    { name: 'Brass Monkey', p: 0.22, silk: '--blue' },
+    { name: 'Lucky Seven', p: 0.17, silk: '--green' },
+    { name: 'Midnight Felt', p: 0.13, silk: '--brass', ink: '--velvet' },
+    { name: 'Double Down', p: 0.10, silk: '--ivory', ink: '--velvet' },
+    { name: 'Long Shot', p: 0.08, silk: '--black' }
+  ];
+  HORSES.forEach(h => { h.odds = Math.floor(0.92 / h.p * 10) / 10; });
+  const dbRace = $('#derby-race'), dbSay = sayer($('#derby-msg')), dbGo = $('#derby-go');
+  const db = { pick: 0, racing: false };
+  HORSES.forEach((h, i) => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'lane';
+    b.dataset.i = i;
+    b.innerHTML = `<div><div style="font-size:12.5px;font-weight:800;margin-bottom:4px">${i + 1}. ${h.name}</div>` +
+      `<div class="track"><span class="horse" style="--silk:var(${h.silk});${h.ink ? `--silk-ink:var(${h.ink})` : ''}">${i + 1}</span></div></div>` +
+      `<div class="odds">${Math.round(h.p * 100)}% to win<b>Pays ${h.odds.toFixed(1)}×</b></div>`;
+    dbRace.append(b);
+  });
+  const dbLanes = $$('.lane', dbRace);
+  const dbRender = () => dbLanes.forEach((l, i) => l.setAttribute('aria-pressed', String(i === db.pick)));
+  dbRace.addEventListener('click', e => {
+    const l = e.target.closest('.lane');
+    if (!l || db.racing) return;
+    db.pick = Number(l.dataset.i);
+    dbRender();
+    dbSay(`Backing ${HORSES[db.pick].name} at ${HORSES[db.pick].odds.toFixed(1)}×.`, '');
+  });
+  dbGo.addEventListener('click', () => {
+    if (db.racing) return;
+    const bet = bets.derby;
+    if (!afford(bet, dbSay)) return;
+    setBalance(balance - bet);
+    db.racing = true;
+    dbGo.disabled = true;
+    lockBet('derby', true);
+    dbLanes.forEach(l => l.classList.remove('won'));
+    let u = rnd(), winner = HORSES.length - 1;
+    for (let i = 0; i < HORSES.length; i++) { if ((u -= HORSES[i].p) < 0) { winner = i; break; } }
+    const base = reduce ? 1500 : 4200 + rnd() * 500;
+    const T = HORSES.map((_, i) => i === winner ? base : base + 250 + rnd() * 1300);
+    const phase = HORSES.map(() => rnd() * 6), end = Math.max(...T);
+    const horses = dbLanes.map(l => $('.horse', l));
+    dbSay('And they’re off!', '');
+    const t0 = performance.now();
+    const frame = now => {
+      const t = now - t0;
+      horses.forEach((h, i) => {
+        const f = Math.min(1, t / T[i]);
+        const x = Math.max(0, Math.min(1, f + 0.03 * Math.sin(t / 260 + phase[i]) * (1 - f) * Math.min(1, t / 400)));
+        h.style.setProperty('--x', x.toFixed(4));
+      });
+      if (t < end + 150) { requestAnimationFrame(frame); return; }
+      dbLanes[winner].classList.add('won');
+      const h = HORSES[winner];
+      settleBet(dbSay, winner === db.pick ? bet * h.odds : 0, bet, `${h.name} wins!`);
+      db.racing = false;
+      dbGo.disabled = false;
+      lockBet('derby', false);
+    };
+    dbLanes.forEach(l => $('.horse', l).style.setProperty('--x', 0));
+    requestAnimationFrame(frame);
+  });
+  dbRender();
+
+  /* ---------- Lobby and navigation ---------- */
+  const GAME_LIST = [
+    ['originals', 'Originals', [
+      ['mines', 'Mines', '◆', 'Find gems, dodge mines', 1], ['plinko', 'Plinko', '●', 'Drop chips through pegs', 1],
+      ['crash', 'Crash', '×', 'Cash out before it crashes'], ['limbo', 'Limbo', '↑', 'Beat your target', 1],
+      ['dice', 'Dice', '⚂', 'Roll under or over', 1], ['tower', 'Tower', '▲', 'Climb past the traps', 1],
+      ['keno', 'Keno', '40', 'Pick numbers, match the draw', 1], ['coinflip', 'Coin Flip', '½', 'Double or nothing', 1],
+      ['scratch', 'Lucky Scratch', '✦', 'Scratch for a prize', 1]
+    ]],
+    ['cards', 'Cards', [
+      ['blackjack', 'Blackjack', '21', 'Beat the dealer to 21'], ['poker', 'Jacks or Better', 'J', 'Video poker'],
+      ['baccarat', 'Baccarat', '9', 'Player, banker or tie'], ['hilo', 'Hi-Lo', '↕', 'Higher or lower?', 1],
+      ['reddog', 'Red Dog', 'RD', 'Bet on the spread', 1], ['war', 'Casino War', 'vs', 'High card wins', 1]
+    ]],
+    ['wheels', 'Slots & wheels', [
+      ['slots', 'Diamond Sevens', '7', 'Three-reel slot'], ['roulette', 'Roulette', '0', 'Single-zero wheel'],
+      ['bigsix', 'Money Wheel', '★', 'The Big Six wheel', 1]
+    ]],
+    ['dice', 'Dice & racing', [
+      ['craps', 'Craps', '7·11', "Pass or don't pass", 1], ['sicbo', 'Sic Bo', '3d', 'Three-dice table', 1],
+      ['derby', 'Velvet Derby', '№', 'Back a horse', 1]
+    ]]
+  ];
+  const GAMES = GAME_LIST.flatMap(g => g[2].map(x => x[0]));
+  $('#lobby-groups').innerHTML = GAME_LIST.map(([cat, title, games]) =>
+    `<div class="lobby-group"><h2>${title}</h2><div class="tiles">` +
+    games.map(([id, name, glyph, tag, isNew]) =>
+      `<button type="button" class="tile" data-cat="${cat}" data-go="${id}"><span class="glyph" aria-hidden="true">${glyph}</span><span><b>${name}</b><small>${tag}</small></span>${isNew ? '<span class="new">New</span>' : ''}</button>`
+    ).join('') + '</div></div>').join('');
+  const onShow = {
+    crash: () => { if (!cr.running) drawCrash(cr.t, cr.m, cr.state); },
+    plinko: () => plDraw(performance.now()),
+    scratch: () => { if (!sc.live && !$('#sc-foil').classList.contains('gone')) scPaint(); }
+  };
+  function showGame(g, push) {
+    if (!GAMES.includes(g)) g = 'lobby';
+    $('#lobby').hidden = g !== 'lobby';
+    GAMES.forEach(x => { $('#' + x).hidden = x !== g; });
+    $('#back').hidden = g === 'lobby';
+    $('#brand').hidden = g !== 'lobby';
+    if (push && location.hash.slice(1) !== g) {
+      try { history.pushState(null, '', '#' + g); } catch { try { location.hash = g; } catch {} }
+    }
+    window.scrollTo(0, 0);
+    if (onShow[g]) onShow[g]();
+  }
+  $('#lobby-groups').addEventListener('click', e => {
+    const t = e.target.closest('[data-go]');
+    if (t) showGame(t.dataset.go, true);
+  });
+  $('#back').addEventListener('click', () => showGame('lobby', true));
+  window.addEventListener('popstate', () => showGame(location.hash.slice(1)));
+  window.addEventListener('resize', () => { if (!$('#plinko').hidden) plDraw(performance.now()); });
+  showGame(location.hash.slice(1));
 
   renderBalance(0);
   bjControls();
